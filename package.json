@@ -1,0 +1,13 @@
+{
+  "name": "nomadad-shopify",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nomadad Shopify theme",
+  "scripts": {
+    "deploy": "shopify theme dev --store nomadad.myshopify.com",
+    "dev": "shopify theme dev --store nomadad.myshopify.com",
+    "check": "shopify theme check",
+    "pull": "shopify theme pull --store nomadad.myshopify.com",
+    "push": "shopify theme push --store nomadad.myshopify.com"
+  }
+}

@@ -1,0 +1,322 @@
+{%- doc -%}
+  Bundle / volume deal selector for the product page.
+  Renders "buy more, save more" tiers that add the selected variant to the
+  cart at the chosen quantity. Discounts are enforced at checkout via a
+  cart discount code, so this only handles quantity + messaging.
+{%- enddoc -%}
+
+{% liquid
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+  assign variant = product.selected_or_first_available_variant
+  assign unit_price = variant.price | default: 0
+
+  assign quantities = '1,2,3,4' | split: ','
+  assign discounts = '0,' | append: block.settings.tier_1_discount | append: ',' | append: block.settings.tier_2_discount | append: ',' | append: block.settings.tier_3_discount | split: ','
+%}
+
+<bundle-deals
+  class="bundle-deals spacing-style"
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-unit-price="{{ unit_price }}"
+  data-money-format="{{ shop.money_format | escape }}"
+  style="{% render 'spacing-style', settings: block.settings %}"
+  {{ block.shopify_attributes }}
+>
+  {%- if block.settings.heading != blank -%}
+    <p class="bundle-deals__title">{{ block.settings.heading }}</p>
+  {%- endif -%}
+
+  <div class="bundle-deals__grid">
+    {%- for qty in quantities -%}
+      {%- liquid
+        assign q = qty | times: 1
+        assign disc = discounts[forloop.index0] | times: 1
+        assign gross = unit_price | times: q
+        assign factor = 100 | minus: disc
+        assign net = gross | times: factor | divided_by: 100
+        assign is_popular = false
+        if block.settings.popular_tier == q
+          assign is_popular = true
+        endif
+      -%}
+      <button
+        type="button"
+        class="bundle-deals__option{% if is_popular %} bundle-deals__option--popular{% endif %}"
+        data-quantity="{{ q }}"
+        data-discount="{{ disc }}"
+        aria-label="{% if disc > 0 %}Buy {{ q }} items, save {{ disc }}%{% else %}Buy {{ q }} item{% endif %}"
+      >
+        {%- if is_popular -%}
+          <span class="bundle-deals__flag">{{ block.settings.popular_label }}</span>
+        {%- endif -%}
+        <span class="bundle-deals__qty">Buy {{ q }}</span>
+        {%- if disc > 0 -%}
+          <span class="bundle-deals__save">Save {{ disc }}%</span>
+        {%- else -%}
+          <span class="bundle-deals__save bundle-deals__save--muted">Single</span>
+        {%- endif -%}
+        <span class="bundle-deals__pricing">
+          <span class="bundle-deals__price" data-bundle-net>{{ net | money }}</span>
+          {%- if disc > 0 -%}
+            <s class="bundle-deals__compare" data-bundle-gross>{{ gross | money }}</s>
+          {%- endif -%}
+        </span>
+      </button>
+    {%- endfor -%}
+  </div>
+
+  <p class="bundle-deals__error" data-bundle-error hidden></p>
+
+  {%- if block.settings.disclaimer != blank -%}
+    <p class="bundle-deals__disclaimer">{{ block.settings.disclaimer }}</p>
+  {%- endif -%}
+</bundle-deals>
+
+<script
+  src="{{ 'bundle-deals.js' | asset_url }}"
+  defer
+></script>
+
+{% stylesheet %}
+  .bundle-deals {
+    display: block;
+  }
+
+  .bundle-deals__title {
+    margin: 0 0 8px;
+    font-weight: 700;
+    font-size: var(--font-size--md);
+  }
+
+  .bundle-deals__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .bundle-deals__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .bundle-deals__option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 18px 8px 14px;
+    border: 2px solid var(--color-border, #1b2a4a26);
+    border-radius: 18px;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .bundle-deals__option:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary, #ff6b4a);
+    box-shadow: 0 6px 16px rgba(27, 42, 74, 0.12);
+  }
+
+  .bundle-deals__option:active {
+    transform: translateY(0);
+  }
+
+  .bundle-deals__option[aria-busy='true'] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .bundle-deals__option--popular {
+    border-color: var(--color-primary, #ff6b4a);
+  }
+
+  .bundle-deals__flag {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 2px 10px;
+    border-radius: 40px;
+    background: var(--color-primary, #ff6b4a);
+    color: #fff;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .bundle-deals__qty {
+    font-weight: 700;
+    font-size: var(--font-size--md);
+  }
+
+  .bundle-deals__save {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 40px;
+    background: color-mix(in srgb, var(--color-primary, #ff6b4a) 16%, transparent);
+    color: var(--color-primary, #ff6b4a);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .bundle-deals__save--muted {
+    background: var(--color-border, #1b2a4a14);
+    color: var(--color-foreground);
+    opacity: 0.7;
+  }
+
+  .bundle-deals__error {
+    margin: 10px 0 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #c0392b;
+  }
+
+  .bundle-deals__pricing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2px;
+  }
+
+  .bundle-deals__price {
+    font-weight: 700;
+  }
+
+  .bundle-deals__compare {
+    opacity: 0.6;
+    font-size: 0.8125rem;
+  }
+
+  .bundle-deals__disclaimer {
+    margin: 10px 0 0;
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Bundle deals",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Bundle & save"
+    },
+    {
+      "type": "range",
+      "id": "tier_1_discount",
+      "label": "Buy 2 discount",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "tier_2_discount",
+      "label": "Buy 3 discount",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "tier_3_discount",
+      "label": "Buy 4 discount",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "popular_tier",
+      "label": "Highlight quantity (0 = none)",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "popular_label",
+      "label": "Highlight label",
+      "default": "Most popular"
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "label": "Disclaimer",
+      "default": "Discount applied automatically at checkout."
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle deals"
+    }
+  ]
+}
+{% endschema %}
