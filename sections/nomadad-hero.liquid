@@ -1,5 +1,5 @@
 {%- liquid
-  assign cta_link = section.settings.button_link | default: routes.all_products_collection_url
+  assign cta_link = section.settings.button_link | default: collections.all.products.first.url | default: routes.all_products_collection_url
   assign overlay = section.settings.overlay_opacity | divided_by: 100.0
 -%}
 
@@ -64,7 +64,7 @@
     width: 100%;
     max-width: 720px;
     margin-inline: auto;
-    padding: 48px 24px;
+    padding: 72px 24px 28px;
     text-align: var(--nmd-align, center);
     color: #fff;
   }
@@ -103,7 +103,7 @@
 
   @media screen and (max-width: 749px) {
     .nmd-hero { min-height: 460px; }
-    .nmd-hero__inner { text-align: center; padding: 40px 20px; }
+    .nmd-hero__inner { text-align: center; padding: 60px 20px 24px; }
   }
 {% endstylesheet %}
 

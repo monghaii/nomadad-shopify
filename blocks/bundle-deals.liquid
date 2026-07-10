@@ -1,8 +1,10 @@
 {%- doc -%}
   Bundle / volume deal selector for the product page.
-  "Buy more, save more" rows that add the selected variant to the cart at the
-  chosen quantity. The percentage discount is enforced at checkout via a cart
-  discount code, so this only handles quantity + messaging.
+  "Buy more, save more" rows presented as radio options. Selecting a tier sets
+  the product form's quantity so the theme's Add to cart and dynamic checkout
+  (Buy with Shop) buttons submit the chosen quantity. The percentage discount is
+  enforced at checkout via a cart discount code, so this only handles quantity +
+  messaging.
 {%- enddoc -%}
 
 {% liquid
@@ -15,6 +17,7 @@
 
   assign quantities = '1,2,3' | split: ','
   assign discounts = '0,' | append: block.settings.tier_1_discount | append: ',' | append: block.settings.tier_2_discount | split: ','
+  assign group_name = 'bundle-tier-' | append: block.id
 %}
 
 <bundle-deals
@@ -30,7 +33,8 @@
     <p class="bundle-deals__title">🛒 {{ block.settings.heading }}</p>
   {%- endif -%}
 
-  <div class="bundle-deals__rows">
+  <fieldset class="bundle-deals__rows">
+    <legend class="visually-hidden">{{ block.settings.heading | default: 'Choose a quantity' }}</legend>
     {%- for qty in quantities -%}
       {%- liquid
         assign q = qty | times: 1
@@ -47,18 +51,24 @@
           assign qty_label = qty_label | append: '+'
         endif
       -%}
-      <button
-        type="button"
+      <label
         class="bundle-deals__option{% if is_popular %} bundle-deals__option--popular{% endif %}"
         data-quantity="{{ q }}"
         data-discount="{{ disc }}"
-        aria-label="{% if disc > 0 %}Buy {{ q }}, save {{ disc }}%{% else %}Buy {{ q }}{% endif %}"
       >
+        <input
+          type="radio"
+          class="bundle-deals__input"
+          name="{{ group_name }}"
+          value="{{ q }}"
+          data-quantity="{{ q }}"
+          {% if is_popular %}checked{% endif %}
+        >
         {%- if is_popular -%}
           <span class="bundle-deals__flag">🔥 {{ block.settings.popular_label }}</span>
         {%- endif -%}
         <span class="bundle-deals__left">
-          <span class="bundle-deals__radio" aria-hidden="true">+</span>
+          <span class="bundle-deals__radio" aria-hidden="true"></span>
           <span class="bundle-deals__qty">{{ qty_label }}</span>
           {%- if disc > 0 -%}
             <span class="bundle-deals__save">Save {{ disc }}%</span>
@@ -72,11 +82,9 @@
             <s class="bundle-deals__compare" data-bundle-gross>{{ gross | money }}</s>
           {%- endif -%}
         </span>
-      </button>
+      </label>
     {%- endfor -%}
-  </div>
-
-  <p class="bundle-deals__error" data-bundle-error hidden></p>
+  </fieldset>
 
   {%- if block.settings.disclaimer != blank -%}
     <p class="bundle-deals__disclaimer">{{ block.settings.disclaimer }}</p>
@@ -106,6 +114,10 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-inline-size: 0;
   }
 
   .bundle-deals__option {
@@ -125,27 +137,32 @@
     transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
   }
 
+  .bundle-deals__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
   .bundle-deals__option:hover {
     border-color: color-mix(in srgb, var(--color-primary, #356c38) 55%, transparent);
   }
 
   .bundle-deals__option:hover .bundle-deals__radio {
     border-color: var(--color-primary, #356c38);
-    color: var(--color-primary, #356c38);
   }
 
-  .bundle-deals__option:active {
-    transform: scale(0.995);
-  }
-
-  .bundle-deals__option[aria-busy='true'] {
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  .bundle-deals__option--popular {
+  /* Selected state */
+  .bundle-deals__option:has(.bundle-deals__input:checked) {
     border-color: var(--color-primary, #356c38);
     background: color-mix(in srgb, var(--color-primary, #356c38) 6%, var(--color-background));
+    box-shadow: 0 0 0 1px var(--color-primary, #356c38) inset;
+  }
+
+  .bundle-deals__option:has(.bundle-deals__input:focus-visible) {
+    outline: 2px solid var(--color-primary, #356c38);
+    outline-offset: 2px;
   }
 
   .bundle-deals__left {
@@ -164,17 +181,26 @@
     height: 22px;
     border-radius: 50%;
     border: 2px solid var(--color-border, #d0cfcc);
-    font-size: 15px;
-    font-weight: 700;
     line-height: 1;
-    color: var(--color-primary, #356c38);
     transition: all 0.12s ease;
   }
 
-  .bundle-deals__option--popular .bundle-deals__radio {
-    border-color: var(--color-primary, #356c38);
+  .bundle-deals__radio::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
     background: var(--color-primary, #356c38);
-    color: #fff;
+    transform: scale(0);
+    transition: transform 0.12s ease;
+  }
+
+  .bundle-deals__option:has(.bundle-deals__input:checked) .bundle-deals__radio {
+    border-color: var(--color-primary, #356c38);
+  }
+
+  .bundle-deals__option:has(.bundle-deals__input:checked) .bundle-deals__radio::after {
+    transform: scale(1);
   }
 
   .bundle-deals__qty {

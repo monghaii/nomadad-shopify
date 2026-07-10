@@ -1,12 +1,11 @@
 /**
  * <bundle-deals>
- * Renders "buy more, save more" tier buttons on the product page. Clicking a
- * tier adds the currently selected variant to the cart at that quantity.
- *
- * The percentage discount itself is enforced at checkout with a cart discount
- * code, so this component only handles quantity, price messaging, and opening
- * the cart drawer. It piggybacks on the theme's `cart:update` event so the
- * drawer, cart icon, and line items all refresh.
+ * Renders "buy more, save more" tiers as radio options on the product page.
+ * Selecting a tier writes its quantity into the product form's quantity input
+ * so the theme's own Add to cart (AJAX) and dynamic checkout (Buy with Shop)
+ * buttons submit the chosen quantity. The percentage discount itself is
+ * enforced at checkout with a cart discount code, so this component only
+ * handles quantity selection and price messaging.
  */
 class BundleDeals extends HTMLElement {
   connectedCallback() {
@@ -14,137 +13,82 @@ class BundleDeals extends HTMLElement {
     this.unitPrice = Number(this.dataset.unitPrice) || 0;
     this.moneyFormat = this.dataset.moneyFormat || '${{amount}}';
 
-    this.addEventListener('click', this.#onClick);
+    this.addEventListener('change', this.#onChange);
     this.section.addEventListener('variant:update', this.#onVariantUpdate);
+
+    // Hide the theme's default quantity stepper — the radios control quantity now.
+    this.#hideNativeQuantity();
+
+    // Apply the initial selection once the form has rendered.
+    requestAnimationFrame(() => this.#syncQuantity());
   }
 
   disconnectedCallback() {
-    this.removeEventListener('click', this.#onClick);
+    this.removeEventListener('change', this.#onChange);
     this.section.removeEventListener('variant:update', this.#onVariantUpdate);
   }
 
   /** @param {Event} event */
-  #onClick = (event) => {
-    const button = event.target instanceof Element ? event.target.closest('.bundle-deals__option') : null;
-    if (!button) return;
-    event.preventDefault();
-    this.#addBundle(button);
+  #onChange = (event) => {
+    if (!(event.target instanceof HTMLInputElement)) return;
+    if (!event.target.classList.contains('bundle-deals__input')) return;
+    this.#syncQuantity();
   };
 
-  /** Recompute tier prices when the selected variant changes. */
+  /** Re-apply the selected quantity (and refresh prices) after a variant change. */
   #onVariantUpdate = (event) => {
     const price = event?.detail?.resource?.price;
-    if (typeof price !== 'number') return;
-    this.unitPrice = price;
-
-    for (const button of this.querySelectorAll('.bundle-deals__option')) {
-      const qty = Number(button.dataset.quantity) || 1;
-      const disc = Number(button.dataset.discount) || 0;
-      const gross = price * qty;
-      const net = Math.round((gross * (100 - disc)) / 100);
-
-      const netEl = button.querySelector('[data-bundle-net]');
-      const grossEl = button.querySelector('[data-bundle-gross]');
-      if (netEl) netEl.textContent = this.#formatMoney(net);
-      if (grossEl) grossEl.textContent = this.#formatMoney(gross);
+    if (typeof price === 'number') {
+      this.unitPrice = price;
+      for (const option of this.querySelectorAll('.bundle-deals__option')) {
+        const qty = Number(option.getAttribute('data-quantity')) || 1;
+        const disc = Number(option.getAttribute('data-discount')) || 0;
+        const gross = price * qty;
+        const net = Math.round((gross * (100 - disc)) / 100);
+        const netEl = option.querySelector('[data-bundle-net]');
+        const grossEl = option.querySelector('[data-bundle-gross]');
+        if (netEl) netEl.textContent = this.#formatMoney(net);
+        if (grossEl) grossEl.textContent = this.#formatMoney(gross);
+      }
     }
+    // The theme resets quantity to the variant minimum on change — re-apply ours.
+    requestAnimationFrame(() => this.#syncQuantity());
   };
 
-  /** @returns {string | null} */
-  #getVariantId() {
-    const input = /** @type {HTMLInputElement | null} */ (
-      this.section.querySelector('product-form-component input[name="id"]')
+  /** @returns {number} the currently selected tier quantity */
+  #selectedQuantity() {
+    const checked = /** @type {HTMLInputElement | null} */ (
+      this.querySelector('.bundle-deals__input:checked')
     );
-    return input?.value || this.dataset.variantId || null;
+    return Number(checked?.value) || 1;
   }
 
-  /** @param {string} [message] */
-  #showError(message) {
-    const errorEl = this.querySelector('[data-bundle-error]');
-    if (!(errorEl instanceof HTMLElement)) return;
-    if (message) {
-      errorEl.textContent = message;
-      errorEl.hidden = false;
-    } else {
-      errorEl.textContent = '';
-      errorEl.hidden = true;
-    }
+  /** @returns {HTMLInputElement | null} */
+  #quantityInput() {
+    return /** @type {HTMLInputElement | null} */ (
+      this.section.querySelector('product-form-component input[name="quantity"]')
+    );
   }
 
-  /** @param {HTMLButtonElement} button */
-  async #addBundle(button) {
-    const quantity = Number(button.dataset.quantity) || 1;
-    const variantId = this.#getVariantId();
-    if (!variantId) {
-      this.#showError('Please choose an option first.');
-      return;
-    }
+  /** Write the selected quantity into the product form so both buttons use it. */
+  #syncQuantity() {
+    const quantity = this.#selectedQuantity();
+    const input = this.#quantityInput();
+    if (!input) return;
+    if (Number(input.value) === quantity) return;
+    input.value = String(quantity);
+    // Notify the theme's quantity-selector component and form serializers.
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
 
-    this.#showError();
-    button.setAttribute('aria-busy', 'true');
-
-    const sectionIds = Array.from(document.querySelectorAll('cart-items-component'))
-      .map((el) => (el instanceof HTMLElement ? el.dataset.sectionId : null))
-      .filter(Boolean);
-
-    const addUrl = window.Theme?.routes?.cart_add_url || '/cart/add.js';
-
-    // FormData with a single id/quantity is the most universally reliable
-    // form of the Ajax cart add endpoint.
-    const body = new FormData();
-    body.append('id', String(variantId));
-    body.append('quantity', String(quantity));
-    if (sectionIds.length) body.append('sections', sectionIds.join(','));
-    body.append('sections_url', window.location.pathname);
-
-    try {
-      const response = await fetch(addUrl, {
-        method: 'POST',
-        headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-        body,
-      });
-
-      const data = await response.json();
-
-      // The Ajax API returns a `status` field only on error (e.g. 422 when the
-      // requested quantity exceeds available inventory).
-      if (!response.ok || data.status) {
-        throw new Error(data.description || data.message || 'Could not add to cart.');
-      }
-
-      let cart = null;
-      try {
-        cart = await (await fetch('/cart.js')).json();
-      } catch (_) {
-        /* non-fatal */
-      }
-
-      document.dispatchEvent(
-        new CustomEvent('cart:update', {
-          bubbles: true,
-          detail: {
-            resource: cart,
-            sourceId: this.id || 'bundle-deals',
-            data: {
-              source: 'bundle-deals',
-              itemCount: cart?.item_count ?? quantity,
-              productId: this.dataset.productId,
-              sections: data.sections,
-            },
-          },
-        })
-      );
-
-      const drawer = document.querySelector('cart-drawer-component');
-      if (drawer && typeof (/** @type {any} */ (drawer).open) === 'function') {
-        /** @type {any} */ (drawer).open();
-      }
-    } catch (error) {
-      console.error('[bundle-deals]', error);
-      this.#showError(error instanceof Error ? error.message : 'Could not add to cart.');
-    } finally {
-      button.removeAttribute('aria-busy');
-    }
+  /** Hide the theme's quantity stepper within this product form. */
+  #hideNativeQuantity() {
+    const input = this.#quantityInput();
+    const wrapper = input?.closest('.quantity-selector-wrapper');
+    const label = this.section.querySelector('.quantity-label');
+    if (wrapper instanceof HTMLElement) wrapper.style.display = 'none';
+    if (label instanceof HTMLElement) label.style.display = 'none';
   }
 
   /**
