@@ -1,0 +1,31 @@
+<div class="nmd-ebadges spacing-style" style="{% render 'spacing-style', settings: block.settings %}" {{ block.shopify_attributes }}>
+  {%- if block.settings.badge_1 != blank -%}<span class="nmd-ebadge nmd-ebadge--moss">{{ block.settings.badge_1 }}</span>{%- endif -%}
+  {%- if block.settings.badge_2 != blank -%}<span class="nmd-ebadge nmd-ebadge--amber">{{ block.settings.badge_2 }}</span>{%- endif -%}
+</div>
+
+{% stylesheet %}
+  .nmd-ebadges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .nmd-ebadge {
+    display: inline-block; padding: 2px 9px; border-radius: 40px;
+    font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .nmd-ebadge--moss { background: color-mix(in srgb, var(--color-primary) 12%, transparent); color: var(--color-primary); }
+  .nmd-ebadge--amber { background: #fef3c7; color: #b45309; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product badges",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "badge_1", "label": "Badge 1", "default": "New Arrival" },
+    { "type": "text", "id": "badge_2", "label": "Badge 2", "default": "Top Rated" },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 6 },
+    { "type": "range", "id": "padding-inline-start", "label": "t:settings.left", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end", "label": "t:settings.right", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "Product badges" } ]
+}
+{% endschema %}

@@ -1,0 +1,90 @@
+{%- liquid
+  assign items = section.blocks
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} nmd-faq" data-testid="faq-{{ section.id }}" style="--nmd-pt: {{ section.settings.padding-block-start }}px; --nmd-pb: {{ section.settings.padding-block-end }}px;">
+  <div class="nmd-faq__head">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="nmd-badge nmd-badge--blue">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="nmd-faq__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+  </div>
+
+  <div class="nmd-faq__list">
+    {%- for block in items -%}
+      <details class="nmd-faq__item" {{ block.shopify_attributes }}>
+        <summary class="nmd-faq__q">
+          <span>{{ block.settings.question }}</span>
+          <span class="nmd-faq__chev" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="nmd-faq__a">{{ block.settings.answer }}</div>
+      </details>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nmd-badge { display: inline-block; padding: 4px 12px; border-radius: 40px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+  .nmd-badge--blue { background: #eff6ff; color: #2563eb; }
+  .nmd-faq { padding-block: var(--nmd-pt, 56px) var(--nmd-pb, 56px); }
+  .nmd-faq .section, .nmd-faq__list { }
+  .nmd-faq__head { text-align: center; margin-block-end: 40px; }
+  .nmd-faq__title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; margin: 16px 0 0; }
+  .nmd-faq__list {
+    max-width: 760px; margin-inline: auto;
+    background: var(--color-background); border: 1px solid var(--color-border);
+    border-radius: 20px; overflow: hidden;
+  }
+  .nmd-faq__item + .nmd-faq__item { border-block-start: 1px solid var(--color-border); }
+  .nmd-faq__q {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 18px 22px; cursor: pointer; font-weight: 700; font-size: 0.9rem; list-style: none;
+  }
+  .nmd-faq__q::-webkit-details-marker { display: none; }
+  .nmd-faq__chev { transition: transform 0.2s ease; opacity: 0.5; font-size: 1.1rem; }
+  .nmd-faq__item[open] .nmd-faq__chev { transform: rotate(180deg); }
+  .nmd-faq__a { padding: 0 22px 20px; font-size: 0.875rem; line-height: 1.6; opacity: 0.8; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-1" },
+    { "type": "select", "id": "section_width", "label": "t:settings.width", "options": [ { "value": "page-width", "label": "t:options.page" }, { "value": "full-width", "label": "t:options.full" } ], "default": "page-width" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Got Questions?" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently Asked Questions 🤔" },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Will this fit in my carry-on?" },
+        { "type": "textarea", "id": "answer", "label": "Answer", "default": "Absolutely! The entire kit packs into its own pouch — about the size of a water bottle." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "category": "t:categories.storytelling",
+      "blocks": [
+        { "type": "faq", "settings": { "question": "Will this fit in my carry-on?", "answer": "Absolutely! The entire kit packs into its own pouch — about the size of a water bottle. It clips to the outside of your bag too. ✈️" } },
+        { "type": "faq", "settings": { "question": "Is the neck pillow inflatable?", "answer": "Nope — it's memory foam! No pumping, no valves, no popping mid-flight. Just pull it out and it's ready in seconds." } },
+        { "type": "faq", "settings": { "question": "Can I wash it?", "answer": "Yes! All components are machine washable. Remove the memory foam insert, toss the covers in on a gentle cycle, and air dry. 🧼" } },
+        { "type": "faq", "settings": { "question": "Does the blanket sling actually work?", "answer": "That's the magic. It wraps around your torso and the seat, creating gentle resistance that keeps you upright — like a cozy seatbelt for sleeping. 💤" } },
+        { "type": "faq", "settings": { "question": "What if I wear glasses?", "answer": "No problem! The eye mask has a low-profile nose bridge that works whether your glasses are on or pushed up on your head." } },
+        { "type": "faq", "settings": { "question": "Is this just for planes?", "answer": "Nope! Road trips, trains, airport layovers, camping, even your couch. Anywhere you need to rest in a seated position. 🚗🚂" } },
+        { "type": "faq", "settings": { "question": "What's your return policy?", "answer": "30 days, no questions asked. If you're not sleeping better, send it back for a full refund. We even cover US return shipping. 💯" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

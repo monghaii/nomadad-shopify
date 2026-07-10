@@ -1,0 +1,68 @@
+{%- liquid
+  assign cta_link = section.settings.button_link
+  if cta_link == blank
+    assign cta_link = product.url | default: routes.all_products_collection_url
+  endif
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} nmd-cta" data-testid="final-cta-{{ section.id }}" style="--nmd-pt: {{ section.settings.padding-block-start }}px; --nmd-pb: {{ section.settings.padding-block-end }}px;">
+  {%- if section.settings.background_image != blank -%}
+    <div class="nmd-cta__bg">
+      {{ section.settings.background_image | image_url: width: 2000 | image_tag: loading: 'lazy', alt: '' }}
+    </div>
+  {%- endif -%}
+  <div class="nmd-cta__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="nmd-badge nmd-cta__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="nmd-cta__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p class="nmd-cta__sub">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a class="button nmd-cta__button" href="{{ cta_link }}">{{ section.settings.button_label }}</a>
+    {%- endif -%}
+    {%- if section.settings.footnote != blank -%}
+      <p class="nmd-cta__foot">{{ section.settings.footnote }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nmd-badge { display: inline-block; padding: 4px 12px; border-radius: 40px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+  .nmd-cta { position: relative; overflow: hidden; padding-block: var(--nmd-pt, 80px) var(--nmd-pb, 80px); }
+  .nmd-cta__bg { position: absolute; inset: 0; opacity: 0.15; z-index: 0; }
+  .nmd-cta__bg img { width: 100%; height: 100%; object-fit: cover; }
+  .nmd-cta__inner { position: relative; z-index: 1; max-width: 640px; margin-inline: auto; text-align: center; }
+  .nmd-cta__eyebrow { background: color-mix(in srgb, var(--color-primary) 22%, transparent); color: var(--color-primary); }
+  .nmd-cta__title { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; margin: 20px 0 14px; }
+  .nmd-cta__sub { font-size: 1.05rem; line-height: 1.6; opacity: 0.75; margin: 0 0 30px; }
+  .nmd-cta__button { font-weight: 800; padding-inline: 40px; }
+  .nmd-cta__foot { margin: 20px 0 0; font-size: 0.85rem; opacity: 0.6; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Final CTA",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-5" },
+    { "type": "select", "id": "section_width", "label": "t:settings.width", "options": [ { "value": "page-width", "label": "t:options.page" }, { "value": "full-width", "label": "t:options.full" } ], "default": "full-width" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Don't Miss Out" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your Next Trip Starts Better 🚀" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Stop arriving exhausted. The NomaDad kit fits in your carry-on and changes how you travel — whether it's 3 hours or 13." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "🛒 Get the NomaDad Kit" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "footnote", "label": "Footnote", "default": "🚚 Free US shipping · ↩️ 30-day money-back · 🎉 Code NOMADAD15 for 15% off" },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 88 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 88 }
+  ],
+  "presets": [
+    { "name": "Final CTA", "category": "t:categories.storytelling" }
+  ]
+}
+{% endschema %}

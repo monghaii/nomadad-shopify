@@ -17,3 +17,7 @@ yarn-error.log*
 
 # Shopify CLI local metadata (never commit this)
 .shopify/
+
+# Local secrets (Theme Access token, etc.) — never commit
+.env
+.env.local

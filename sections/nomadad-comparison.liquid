@@ -1,0 +1,102 @@
+{%- liquid
+  assign cons = section.blocks | where: 'type', 'con'
+  assign pros = section.blocks | where: 'type', 'pro'
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} nmd-vs" data-testid="comparison-{{ section.id }}" style="--nmd-pt: {{ section.settings.padding-block-start }}px; --nmd-pb: {{ section.settings.padding-block-end }}px;">
+  <div class="nmd-vs__head">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="nmd-badge nmd-badge--red">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="nmd-vs__title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+  </div>
+
+  <div class="nmd-vs__grid">
+    <div class="nmd-vs__card nmd-vs__card--con">
+      <div class="nmd-vs__label">
+        <span class="nmd-vs__icon nmd-vs__icon--con">✕</span>
+        {{ section.settings.con_title }}
+      </div>
+      <ul class="nmd-vs__list">
+        {%- for block in cons -%}
+          <li {{ block.shopify_attributes }}><span class="nmd-vs__mark nmd-vs__mark--con">✕</span>{{ block.settings.text }}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="nmd-vs__card nmd-vs__card--pro">
+      <div class="nmd-vs__label">
+        <span class="nmd-vs__icon nmd-vs__icon--pro">✓</span>
+        {{ section.settings.pro_title }}
+      </div>
+      <ul class="nmd-vs__list">
+        {%- for block in pros -%}
+          <li {{ block.shopify_attributes }}><span class="nmd-vs__mark nmd-vs__mark--pro">✓</span>{{ block.settings.text }}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .nmd-badge { display: inline-block; padding: 4px 12px; border-radius: 40px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+  .nmd-badge--red { background: #fef2f2; color: #dc2626; }
+  .nmd-vs { padding-block: var(--nmd-pt, 56px) var(--nmd-pb, 56px); }
+  .nmd-vs__head { text-align: center; margin-block-end: 40px; }
+  .nmd-vs__title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; margin: 16px 0 0; }
+  .nmd-vs__grid { display: grid; gap: 20px; max-width: 900px; margin-inline: auto; }
+  @media screen and (min-width: 750px) { .nmd-vs__grid { grid-template-columns: 1fr 1fr; } }
+  .nmd-vs__card { border-radius: 20px; padding: 26px; }
+  .nmd-vs__card--con { background: #fef2f2; border: 1px solid #fecaca; }
+  .nmd-vs__card--pro { background: #f0fdf4; border: 1px solid #bbf7d0; box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 8%, transparent); }
+  .nmd-vs__label { display: flex; align-items: center; gap: 10px; font-weight: 700; margin-block-end: 18px; }
+  .nmd-vs__icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: 0.85rem; }
+  .nmd-vs__icon--con { background: #fee2e2; color: #ef4444; }
+  .nmd-vs__icon--pro { background: #dcfce7; color: var(--color-primary); }
+  .nmd-vs__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .nmd-vs__list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; line-height: 1.5; }
+  .nmd-vs__mark { flex-shrink: 0; margin-top: 2px; font-weight: 700; }
+  .nmd-vs__mark--con { color: #f87171; }
+  .nmd-vs__mark--pro { color: var(--color-primary); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Comparison",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-1" },
+    { "type": "select", "id": "section_width", "label": "t:settings.width", "options": [ { "value": "page-width", "label": "t:options.page" }, { "value": "full-width", "label": "t:options.full" } ], "default": "page-width" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Difference" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Why NomaDad Beats a Basic Neck Pillow 💪" },
+    { "type": "text", "id": "con_title", "label": "Left column title", "default": "Traditional Neck Pillows 👎" },
+    { "type": "text", "id": "pro_title", "label": "Right column title", "default": "NomaDad 3-in-1 Kit 👍" },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    { "type": "con", "name": "Downside (left)", "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "Bulky — takes up half your carry-on" } ] },
+    { "type": "pro", "name": "Benefit (right)", "settings": [ { "type": "text", "id": "text", "label": "Text", "default": "Ultra compact — packs into its own pouch" } ] }
+  ],
+  "presets": [
+    {
+      "name": "Comparison",
+      "category": "t:categories.storytelling",
+      "blocks": [
+        { "type": "con", "settings": { "text": "Bulky — takes up half your carry-on" } },
+        { "type": "con", "settings": { "text": "Head still falls forward mid-sleep" } },
+        { "type": "con", "settings": { "text": "No body support, you slide everywhere" } },
+        { "type": "con", "settings": { "text": "Light leaks keep you half-awake" } },
+        { "type": "con", "settings": { "text": "One-trick pony, limited use" } },
+        { "type": "pro", "settings": { "text": "Ultra compact — packs into its own pouch" } },
+        { "type": "pro", "settings": { "text": "Ergonomic support keeps head neutral" } },
+        { "type": "pro", "settings": { "text": "Blanket sling stabilizes your whole body" } },
+        { "type": "pro", "settings": { "text": "Total blackout eye mask included" } },
+        { "type": "pro", "settings": { "text": "3 products, 1 system, endless uses" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,50 @@
+{%- liquid
+  assign product = closest.product
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+  endif
+  assign variant = product.selected_or_first_available_variant
+  assign price = variant.price
+  assign compare = variant.compare_at_price
+-%}
+<div class="nmd-urgency spacing-style" style="{% render 'spacing-style', settings: block.settings %}" {{ block.shopify_attributes }}>
+  {%- if block.settings.label != blank -%}
+    <div class="nmd-urgency__label">🕐 {{ block.settings.label }}</div>
+  {%- endif -%}
+  <div class="nmd-urgency__row">
+    <span class="nmd-urgency__price">{{ price | money }}</span>
+    {%- if compare > price -%}
+      <s class="nmd-urgency__compare">{{ compare | money }}</s>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nmd-urgency {
+    background: #fef2f2; border: 1px solid #fecaca; border-radius: 14px; padding: 14px 16px;
+  }
+  .nmd-urgency__label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;
+    color: #dc2626; margin-block-end: 4px;
+  }
+  .nmd-urgency__row { display: flex; align-items: baseline; gap: 12px; }
+  .nmd-urgency__price { font-size: 1.9rem; font-weight: 800; color: var(--color-foreground); }
+  .nmd-urgency__compare { font-size: 1.1rem; color: #9ca3af; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Urgency price",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Urgency label", "default": "Limited Time Offer" },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 16 },
+    { "type": "range", "id": "padding-inline-start", "label": "t:settings.left", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end", "label": "t:settings.right", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "Urgency price" } ]
+}
+{% endschema %}

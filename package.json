@@ -4,10 +4,10 @@
   "private": true,
   "description": "Nomadad Shopify theme",
   "scripts": {
-    "deploy": "shopify theme dev --store nomadad.myshopify.com",
-    "dev": "shopify theme dev --store nomadad.myshopify.com",
-    "check": "shopify theme check",
-    "pull": "shopify theme pull --store nomadad.myshopify.com",
-    "push": "shopify theme push --store nomadad.myshopify.com"
+    "deploy": "set -a && . ./.env && set +a && shopify theme dev",
+    "dev": "set -a && . ./.env && set +a && shopify theme dev",
+    "check": "set -a && . ./.env && set +a && shopify theme check",
+    "pull": "set -a && . ./.env && set +a && shopify theme pull",
+    "push": "set -a && . ./.env && set +a && shopify theme push"
   }
 }

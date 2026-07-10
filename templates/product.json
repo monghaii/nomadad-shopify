@@ -8,6 +8,16 @@
  * ------------------------------------------------------------
  */{
   "sections": {
+    "nomadad_social_proof": {
+      "type": "nomadad-social-proof",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "section_width": "full-width",
+        "item_1": "47 bought in last 24hrs",
+        "item_2": "2,000+ happy travelers",
+        "item_3": "Physician Designed"
+      }
+    },
     "main": {
       "type": "product-information",
       "blocks": {
@@ -74,11 +84,11 @@
                 "text": "<h1>{{ closest.product.title }}</h1>",
                 "width": "100%",
                 "max_width": "normal",
-                "alignment": "center",
+                "alignment": "left",
                 "type_preset": "h3",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
+                "font": "var(--font-heading--family)",
+                "font_size": "1.75rem",
+                "line_height": "tight",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
@@ -86,44 +96,10 @@
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
-                "padding-block-start": 50,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_a7krng": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": true,
-                "show_tax_info": true,
-                "type_preset": "h5",
-                "width": "100%",
-                "alignment": "center",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "color": "var(--color-foreground)",
                 "padding-block-start": 0,
-                "padding-block-end": 50,
+                "padding-block-end": 8,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "divider_HrJgFt": {
-              "type": "_divider",
-              "name": "t:names.divider",
-              "settings": {
-                "thickness": 1,
-                "corner_radius": "square",
-                "width_percent": 100,
-                "padding-block-start": 12,
-                "padding-block-end": 12
               },
               "blocks": {}
             },
@@ -140,14 +116,74 @@
               },
               "blocks": {}
             },
+            "product_eyebrow_badges": {
+              "type": "product-eyebrow-badges",
+              "settings": {
+                "badge_1": "New Arrival",
+                "badge_2": "Top Rated",
+                "padding-block-start": 0,
+                "padding-block-end": 6,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_rating": {
+              "type": "product-rating",
+              "settings": {
+                "rating": "4.0",
+                "reviews_text": "2,000+ reviews",
+                "reviews_link": "",
+                "padding-block-start": 0,
+                "padding-block-end": 14,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "urgency_price": {
+              "type": "urgency-price",
+              "settings": {
+                "label": "Limited Time Offer",
+                "padding-block-start": 0,
+                "padding-block-end": 16,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "payment_icons": {
+              "type": "payment-icons",
+              "settings": {
+                "label": "Secure checkout:",
+                "padding-block-start": 4,
+                "padding-block-end": 10,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "trust_badges": {
+              "type": "trust-badges",
+              "settings": {
+                "item_1": "FREE US Shipping",
+                "item_2": "30-Day Returns",
+                "item_3": "1-Year Warranty",
+                "padding-block-start": 4,
+                "padding-block-end": 16,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "bundle_deals_nomadad": {
               "type": "bundle-deals",
               "settings": {
-                "heading": "Bundle & save",
+                "heading": "Buy more, save more",
                 "tier_1_discount": 10,
-                "tier_2_discount": 15,
+                "tier_2_discount": 20,
                 "tier_3_discount": 20,
-                "popular_tier": 3,
+                "popular_tier": 2,
                 "popular_label": "Most popular",
                 "disclaimer": "Discount applied automatically at checkout.",
                 "padding-block-start": 8,
@@ -324,13 +360,16 @@
             }
           },
           "block_order": [
+            "product_eyebrow_badges",
             "text_9WaLn7",
-            "price_a7krng",
-            "divider_HrJgFt",
+            "product_rating",
+            "urgency_price",
+            "description_visible_nomadad",
             "variant_picker_R3rGDr",
             "bundle_deals_nomadad",
             "buy_buttons_eYQEYi",
-            "description_visible_nomadad",
+            "payment_icons",
+            "trust_badges",
             "accordion_NKWPiW"
           ]
         }
@@ -357,6 +396,259 @@
         "alignment_horizontal": "center",
         "padding-block-start": 8,
         "padding-block-end": 8
+      }
+    },
+    "nomadad_usecases": {
+      "type": "nomadad-usecases",
+      "blocks": {
+        "u1": {
+          "type": "usecase",
+          "settings": {
+            "emoji": "✈️",
+            "title": "Long-Haul Flights",
+            "description": "Sleep like first class in economy."
+          }
+        },
+        "u2": {
+          "type": "usecase",
+          "settings": {
+            "emoji": "🚗",
+            "title": "Road Trips",
+            "description": "Passenger seat naps, no neck pain."
+          }
+        },
+        "u3": {
+          "type": "usecase",
+          "settings": {
+            "emoji": "☕",
+            "title": "Airport Layovers",
+            "description": "Turn any gate seat into a bed."
+          }
+        },
+        "u4": {
+          "type": "usecase",
+          "settings": {
+            "emoji": "🌙",
+            "title": "Red-Eye Recovery",
+            "description": "Land feeling human, not zombie."
+          }
+        }
+      },
+      "block_order": [
+        "u1",
+        "u2",
+        "u3",
+        "u4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "section_width": "page-width",
+        "eyebrow": "Works Everywhere",
+        "heading": "Built for Every Mile 🛣️",
+        "subheading": "From red-eyes to road trips — this kit has your back (and your neck).",
+        "padding-block-start": 56,
+        "padding-block-end": 56
+      }
+    },
+    "nomadad_comparison": {
+      "type": "nomadad-comparison",
+      "blocks": {
+        "c1": {
+          "type": "con",
+          "settings": {
+            "text": "Bulky — takes up half your carry-on"
+          }
+        },
+        "c2": {
+          "type": "con",
+          "settings": {
+            "text": "Head still falls forward mid-sleep"
+          }
+        },
+        "c3": {
+          "type": "con",
+          "settings": {
+            "text": "No body support, you slide everywhere"
+          }
+        },
+        "c4": {
+          "type": "con",
+          "settings": {
+            "text": "Light leaks keep you half-awake"
+          }
+        },
+        "c5": {
+          "type": "con",
+          "settings": {
+            "text": "One-trick pony, limited use"
+          }
+        },
+        "p1": {
+          "type": "pro",
+          "settings": {
+            "text": "Ultra compact — packs into its own pouch"
+          }
+        },
+        "p2": {
+          "type": "pro",
+          "settings": {
+            "text": "Ergonomic support keeps head neutral"
+          }
+        },
+        "p3": {
+          "type": "pro",
+          "settings": {
+            "text": "Blanket sling stabilizes your whole body"
+          }
+        },
+        "p4": {
+          "type": "pro",
+          "settings": {
+            "text": "Total blackout eye mask included"
+          }
+        },
+        "p5": {
+          "type": "pro",
+          "settings": {
+            "text": "3 products, 1 system, endless uses"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "eyebrow": "The Difference",
+        "heading": "Why NomaDad Beats a Basic Neck Pillow 💪",
+        "con_title": "Traditional Neck Pillows 👎",
+        "pro_title": "NomaDad 3-in-1 Kit 👍",
+        "padding-block-start": 56,
+        "padding-block-end": 56
+      }
+    },
+    "nomadad_testimonials": {
+      "type": "nomadad-testimonials",
+      "blocks": {
+        "t1": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Mike S.",
+            "trip": "LAX → Tokyo",
+            "quote": "Slept 8 hours straight in economy. My wife couldn't believe it. Best $50 I've ever spent on travel gear."
+          }
+        },
+        "t2": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Chris P.",
+            "trip": "12hr family road trip",
+            "quote": "When it wasn't my turn to drive, I actually rested instead of just closing my eyes and pretending."
+          }
+        },
+        "t3": {
+          "type": "testimonial",
+          "settings": {
+            "name": "Jason L.",
+            "trip": "Weekly business flights",
+            "quote": "I fly every Monday. This kit is the reason I don't dread it anymore. Game. Changer."
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "section_width": "page-width",
+        "eyebrow": "Real Stories",
+        "heading": "Happy Travelers Love NomaDad ❤️",
+        "subheading": "Real dads, real trips, real rest.",
+        "padding-block-start": 56,
+        "padding-block-end": 56
+      }
+    },
+    "nomadad_faq": {
+      "type": "nomadad-faq",
+      "blocks": {
+        "f1": {
+          "type": "faq",
+          "settings": {
+            "question": "Will this fit in my carry-on?",
+            "answer": "Absolutely! The entire kit packs into its own pouch — about the size of a water bottle. It clips to the outside of your bag too. ✈️"
+          }
+        },
+        "f2": {
+          "type": "faq",
+          "settings": {
+            "question": "Is the neck pillow inflatable?",
+            "answer": "Nope — it's memory foam! No pumping, no valves, no popping mid-flight. Just pull it out and it's ready in seconds."
+          }
+        },
+        "f3": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I wash it?",
+            "answer": "Yes! All components are machine washable. Remove the memory foam insert, toss the covers in on a gentle cycle, and air dry. 🧼"
+          }
+        },
+        "f4": {
+          "type": "faq",
+          "settings": {
+            "question": "Does the blanket sling actually work?",
+            "answer": "That's the magic. It wraps around your torso and the seat, creating gentle resistance that keeps you upright — like a cozy seatbelt for sleeping. 💤"
+          }
+        },
+        "f5": {
+          "type": "faq",
+          "settings": {
+            "question": "What if I wear glasses?",
+            "answer": "No problem! The eye mask has a low-profile nose bridge that works whether your glasses are on or pushed up on your head."
+          }
+        },
+        "f6": {
+          "type": "faq",
+          "settings": {
+            "question": "Is this just for planes?",
+            "answer": "Nope! Road trips, trains, airport layovers, camping, even your couch. Anywhere you need to rest in a seated position. 🚗🚂"
+          }
+        },
+        "f7": {
+          "type": "faq",
+          "settings": {
+            "question": "What's your return policy?",
+            "answer": "30 days, no questions asked. If you're not sleeping better, send it back for a full refund. We even cover US return shipping. 💯"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6",
+        "f7"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "eyebrow": "Got Questions?",
+        "heading": "Frequently Asked Questions 🤔",
+        "padding-block-start": 56,
+        "padding-block-end": 56
       }
     },
     "product_recommendations_qnzPkn": {
@@ -641,11 +933,31 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "nomadad_final_cta": {
+      "type": "nomadad-final-cta",
+      "settings": {
+        "color_scheme": "scheme-5",
+        "section_width": "full-width",
+        "eyebrow": "Don't Miss Out",
+        "heading": "Your Next Trip Starts Better 🚀",
+        "subheading": "Stop arriving exhausted. The NomaDad kit fits in your carry-on and changes how you travel — whether it's 3 hours or 13.",
+        "button_label": "🛒 Get the NomaDad Kit",
+        "footnote": "🚚 Free US shipping · ↩️ 30-day money-back · 🎉 Code NOMADAD15 for 15% off",
+        "padding-block-start": 88,
+        "padding-block-end": 88
+      }
     }
   },
   "order": [
+    "nomadad_social_proof",
     "main",
     "main_divider_nomadad",
-    "product_recommendations_qnzPkn"
+    "nomadad_usecases",
+    "nomadad_comparison",
+    "nomadad_testimonials",
+    "nomadad_faq",
+    "product_recommendations_qnzPkn",
+    "nomadad_final_cta"
   ]
 }

@@ -1,8 +1,8 @@
 {%- doc -%}
   Bundle / volume deal selector for the product page.
-  Renders "buy more, save more" tiers that add the selected variant to the
-  cart at the chosen quantity. Discounts are enforced at checkout via a
-  cart discount code, so this only handles quantity + messaging.
+  "Buy more, save more" rows that add the selected variant to the cart at the
+  chosen quantity. The percentage discount is enforced at checkout via a cart
+  discount code, so this only handles quantity + messaging.
 {%- enddoc -%}
 
 {% liquid
@@ -13,8 +13,8 @@
   assign variant = product.selected_or_first_available_variant
   assign unit_price = variant.price | default: 0
 
-  assign quantities = '1,2,3,4' | split: ','
-  assign discounts = '0,' | append: block.settings.tier_1_discount | append: ',' | append: block.settings.tier_2_discount | append: ',' | append: block.settings.tier_3_discount | split: ','
+  assign quantities = '1,2,3' | split: ','
+  assign discounts = '0,' | append: block.settings.tier_1_discount | append: ',' | append: block.settings.tier_2_discount | split: ','
 %}
 
 <bundle-deals
@@ -27,10 +27,10 @@
   {{ block.shopify_attributes }}
 >
   {%- if block.settings.heading != blank -%}
-    <p class="bundle-deals__title">{{ block.settings.heading }}</p>
+    <p class="bundle-deals__title">🛒 {{ block.settings.heading }}</p>
   {%- endif -%}
 
-  <div class="bundle-deals__grid">
+  <div class="bundle-deals__rows">
     {%- for qty in quantities -%}
       {%- liquid
         assign q = qty | times: 1
@@ -42,23 +42,30 @@
         if block.settings.popular_tier == q
           assign is_popular = true
         endif
+        assign qty_label = 'Buy ' | append: q
+        if forloop.last
+          assign qty_label = qty_label | append: '+'
+        endif
       -%}
       <button
         type="button"
         class="bundle-deals__option{% if is_popular %} bundle-deals__option--popular{% endif %}"
         data-quantity="{{ q }}"
         data-discount="{{ disc }}"
-        aria-label="{% if disc > 0 %}Buy {{ q }} items, save {{ disc }}%{% else %}Buy {{ q }} item{% endif %}"
+        aria-label="{% if disc > 0 %}Buy {{ q }}, save {{ disc }}%{% else %}Buy {{ q }}{% endif %}"
       >
         {%- if is_popular -%}
-          <span class="bundle-deals__flag">{{ block.settings.popular_label }}</span>
+          <span class="bundle-deals__flag">🔥 {{ block.settings.popular_label }}</span>
         {%- endif -%}
-        <span class="bundle-deals__qty">Buy {{ q }}</span>
-        {%- if disc > 0 -%}
-          <span class="bundle-deals__save">Save {{ disc }}%</span>
-        {%- else -%}
-          <span class="bundle-deals__save bundle-deals__save--muted">Single</span>
-        {%- endif -%}
+        <span class="bundle-deals__left">
+          <span class="bundle-deals__radio" aria-hidden="true">+</span>
+          <span class="bundle-deals__qty">{{ qty_label }}</span>
+          {%- if disc > 0 -%}
+            <span class="bundle-deals__save">Save {{ disc }}%</span>
+          {%- else -%}
+            <span class="bundle-deals__save bundle-deals__save--muted">Standard</span>
+          {%- endif -%}
+        </span>
         <span class="bundle-deals__pricing">
           <span class="bundle-deals__price" data-bundle-net>{{ net | money }}</span>
           {%- if disc > 0 -%}
@@ -87,47 +94,48 @@
   }
 
   .bundle-deals__title {
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     font-weight: 700;
     font-size: var(--font-size--md);
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .bundle-deals__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+  .bundle-deals__rows {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .bundle-deals__grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
   }
 
   .bundle-deals__option {
     position: relative;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 18px 8px 14px;
-    border: 2px solid var(--color-border, #1b2a4a26);
-    border-radius: 18px;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--color-border, #e5e4e2);
+    border-radius: 14px;
     background: var(--color-background);
     color: var(--color-foreground);
     cursor: pointer;
-    text-align: center;
-    transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+    text-align: left;
+    transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
   }
 
   .bundle-deals__option:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-primary, #ff6b4a);
-    box-shadow: 0 6px 16px rgba(27, 42, 74, 0.12);
+    border-color: color-mix(in srgb, var(--color-primary, #356c38) 55%, transparent);
+  }
+
+  .bundle-deals__option:hover .bundle-deals__radio {
+    border-color: var(--color-primary, #356c38);
+    color: var(--color-primary, #356c38);
   }
 
   .bundle-deals__option:active {
-    transform: translateY(0);
+    transform: scale(0.995);
   }
 
   .bundle-deals__option[aria-busy='true'] {
@@ -136,23 +144,37 @@
   }
 
   .bundle-deals__option--popular {
-    border-color: var(--color-primary, #ff6b4a);
+    border-color: var(--color-primary, #356c38);
+    background: color-mix(in srgb, var(--color-primary, #356c38) 6%, var(--color-background));
   }
 
-  .bundle-deals__flag {
-    position: absolute;
-    top: -11px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    padding: 2px 10px;
-    border-radius: 40px;
-    background: var(--color-primary, #ff6b4a);
-    color: #fff;
-    font-size: 0.625rem;
+  .bundle-deals__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .bundle-deals__radio {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border, #d0cfcc);
+    font-size: 15px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--color-primary, #356c38);
+    transition: all 0.12s ease;
+  }
+
+  .bundle-deals__option--popular .bundle-deals__radio {
+    border-color: var(--color-primary, #356c38);
+    background: var(--color-primary, #356c38);
+    color: #fff;
   }
 
   .bundle-deals__qty {
@@ -162,18 +184,50 @@
 
   .bundle-deals__save {
     display: inline-block;
-    padding: 1px 8px;
+    padding: 2px 9px;
     border-radius: 40px;
-    background: color-mix(in srgb, var(--color-primary, #ff6b4a) 16%, transparent);
-    color: var(--color-primary, #ff6b4a);
-    font-size: 0.75rem;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 0.6875rem;
     font-weight: 700;
   }
 
   .bundle-deals__save--muted {
-    background: var(--color-border, #1b2a4a14);
+    background: var(--color-border, #f1f0ee);
     color: var(--color-foreground);
-    opacity: 0.7;
+    opacity: 0.65;
+  }
+
+  .bundle-deals__pricing {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .bundle-deals__price {
+    font-weight: 800;
+    font-size: var(--font-size--md);
+  }
+
+  .bundle-deals__compare {
+    opacity: 0.5;
+    font-size: 0.8125rem;
+  }
+
+  .bundle-deals__flag {
+    position: absolute;
+    top: -10px;
+    right: 14px;
+    white-space: nowrap;
+    padding: 2px 10px;
+    border-radius: 40px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
   }
 
   .bundle-deals__error {
@@ -183,26 +237,10 @@
     color: #c0392b;
   }
 
-  .bundle-deals__pricing {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2px;
-  }
-
-  .bundle-deals__price {
-    font-weight: 700;
-  }
-
-  .bundle-deals__compare {
-    opacity: 0.6;
-    font-size: 0.8125rem;
-  }
-
   .bundle-deals__disclaimer {
     margin: 10px 0 0;
     font-size: 0.75rem;
-    opacity: 0.7;
+    opacity: 0.65;
   }
 {% endstylesheet %}
 
@@ -215,7 +253,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Bundle & save"
+      "default": "Buy more, save more"
     },
     {
       "type": "range",
@@ -230,17 +268,7 @@
     {
       "type": "range",
       "id": "tier_2_discount",
-      "label": "Buy 3 discount",
-      "min": 0,
-      "max": 90,
-      "step": 1,
-      "unit": "%",
-      "default": 15
-    },
-    {
-      "type": "range",
-      "id": "tier_3_discount",
-      "label": "Buy 4 discount",
+      "label": "Buy 3+ discount",
       "min": 0,
       "max": 90,
       "step": 1,
@@ -252,9 +280,9 @@
       "id": "popular_tier",
       "label": "Highlight quantity (0 = none)",
       "min": 0,
-      "max": 4,
+      "max": 3,
       "step": 1,
-      "default": 3
+      "default": 2
     },
     {
       "type": "text",

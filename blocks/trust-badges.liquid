@@ -1,0 +1,43 @@
+<div class="nmd-trust spacing-style" style="{% render 'spacing-style', settings: block.settings %}" {{ block.shopify_attributes }}>
+  <div class="nmd-trust__item">
+    <span class="nmd-trust__icon">🚚</span>
+    <span class="nmd-trust__text">{{ block.settings.item_1 }}</span>
+  </div>
+  <div class="nmd-trust__item">
+    <span class="nmd-trust__icon">↩️</span>
+    <span class="nmd-trust__text">{{ block.settings.item_2 }}</span>
+  </div>
+  <div class="nmd-trust__item">
+    <span class="nmd-trust__icon">🛡️</span>
+    <span class="nmd-trust__text">{{ block.settings.item_3 }}</span>
+  </div>
+</div>
+
+{% stylesheet %}
+  .nmd-trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .nmd-trust__item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+    background: color-mix(in srgb, var(--color-foreground) 3%, transparent);
+    border: 1px solid var(--color-border); border-radius: 12px; padding: 12px 8px;
+  }
+  .nmd-trust__icon { font-size: 1.15rem; }
+  .nmd-trust__text { font-size: 0.66rem; font-weight: 700; line-height: 1.25; opacity: 0.85; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Trust badges",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "item_1", "label": "Item 1", "default": "FREE US Shipping" },
+    { "type": "text", "id": "item_2", "label": "Item 2", "default": "30-Day Returns" },
+    { "type": "text", "id": "item_3", "label": "Item 3", "default": "1-Year Warranty" },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 4 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding-inline-start", "label": "t:settings.left", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end", "label": "t:settings.right", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "Trust badges" } ]
+}
+{% endschema %}

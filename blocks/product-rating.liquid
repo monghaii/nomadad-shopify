@@ -1,0 +1,60 @@
+{%- liquid
+  assign rating = block.settings.rating | plus: 0.0
+  assign full = rating | floor
+  assign remainder = rating | minus: full
+  assign half_index = full | plus: 1
+  assign has_half = false
+  if remainder >= 0.25
+    assign has_half = true
+  endif
+-%}
+<div class="nmd-rating spacing-style" style="{% render 'spacing-style', settings: block.settings %}" {{ block.shopify_attributes }}>
+  <span class="nmd-rating__stars" aria-hidden="true">
+    {%- for i in (1..5) -%}
+      {%- if i <= full -%}
+        <span class="nmd-star nmd-star--full">★</span>
+      {%- elsif has_half and i == half_index -%}
+        <span class="nmd-star nmd-star--half">★</span>
+      {%- else -%}
+        <span class="nmd-star nmd-star--empty">★</span>
+      {%- endif -%}
+    {%- endfor -%}
+  </span>
+  <span class="nmd-rating__value">{{ rating }}</span>
+  {%- if block.settings.reviews_text != blank -%}
+    {%- if block.settings.reviews_link != blank -%}
+      <a class="nmd-rating__count" href="{{ block.settings.reviews_link }}">({{ block.settings.reviews_text }})</a>
+    {%- else -%}
+      <span class="nmd-rating__count">({{ block.settings.reviews_text }})</span>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .nmd-rating { display: flex; align-items: center; gap: 8px; }
+  .nmd-rating__stars { display: inline-flex; letter-spacing: 1px; font-size: 1rem; line-height: 1; }
+  .nmd-star--full { color: #fbbf24; }
+  .nmd-star--empty { color: #e5e7eb; }
+  .nmd-star--half { position: relative; color: #e5e7eb; }
+  .nmd-star--half::before { content: "★"; position: absolute; left: 0; width: 50%; overflow: hidden; color: #fbbf24; }
+  .nmd-rating__value { font-size: 0.875rem; font-weight: 600; }
+  .nmd-rating__count { font-size: 0.875rem; color: var(--color-primary); text-decoration: underline; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product rating",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "rating", "label": "Rating (0-5)", "default": "4.0" },
+    { "type": "text", "id": "reviews_text", "label": "Reviews label", "default": "2,000+ reviews" },
+    { "type": "url", "id": "reviews_link", "label": "Reviews link" },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding-inline-start", "label": "t:settings.left", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end", "label": "t:settings.right", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "Product rating" } ]
+}
+{% endschema %}

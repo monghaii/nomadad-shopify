@@ -1,143 +1,30 @@
-
-{% assign block_settings = block.settings %}
-
-{%- assign block_settings = block.settings -%}
-
-<div
-  class="
-    payment-icons
-    spacing-style
-  "
-  style="
-    {% render 'spacing-padding', settings: block_settings %}
-    --icon-gap: {{ block_settings.gap }}px;
-    --alignment: {{ block_settings.horizontal_alignment }};
-  "
-  {{ block.shopify_attributes }}
->
-  <span class="visually-hidden">{{ 'blocks.payment_methods' | t }}</span>
-  <ul
-    class="payment-icons__list"
-    role="list"
-  >
-    {%- for type in shop.enabled_payment_types -%}
-      <li class="payment-icons__item">
-        {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
-      </li>
-    {%- endfor -%}
-  </ul>
+<div class="nmd-pay spacing-style" style="{% render 'spacing-style', settings: block.settings %}" {{ block.shopify_attributes }}>
+  {%- if block.settings.label != blank -%}<span class="nmd-pay__label">{{ block.settings.label }}</span>{%- endif -%}
+  <svg viewBox="0 0 38 24" class="nmd-pay__icon" role="img" aria-label="Visa"><rect width="38" height="24" rx="3" fill="#1434CB"/><path d="M15.5 16.5h-2.2l1.4-8.5h2.2l-1.4 8.5zm9.1-8.3c-.4-.2-1.1-.3-2-.3-2.2 0-3.7 1.1-3.7 2.7 0 1.2 1.1 1.8 2 2.2.9.4 1.2.7 1.2 1 0 .6-.7.8-1.4.8-1 0-1.5-.1-2.3-.5l-.3-.2-.3 2c.6.3 1.6.5 2.7.5 2.3 0 3.8-1.1 3.8-2.8 0-.9-.6-1.6-1.8-2.2-.8-.4-1.2-.6-1.2-1 0-.3.4-.7 1.2-.7.7 0 1.2.1 1.6.3l.2.1.3-1.9zm5.6-.2h-1.7c-.5 0-.9.1-1.1.7l-3.2 7.8h2.3l.5-1.3h2.8l.3 1.3h2l-1.9-8.5zm-2.4 5.5l1.2-3.2.3 1.6.4 1.6h-1.9zM13.2 8l-2.1 5.8-.2-1.2c-.4-1.4-1.7-2.9-3.1-3.6l2 7.5h2.3l3.4-8.5h-2.3z" fill="#fff"/></svg>
+  <svg viewBox="0 0 38 24" class="nmd-pay__icon" role="img" aria-label="Mastercard"><rect width="38" height="24" rx="3" fill="#252525"/><circle cx="15" cy="12" r="7" fill="#EB001B"/><circle cx="23" cy="12" r="7" fill="#F79E1B"/><path d="M19 7.5a7 7 0 010 9 7 7 0 010-9z" fill="#FF5F00"/></svg>
+  <svg viewBox="0 0 38 24" class="nmd-pay__icon" role="img" aria-label="Amex"><rect width="38" height="24" rx="3" fill="#2E77BC"/><text x="19" y="14" text-anchor="middle" fill="#fff" font-size="7" font-weight="bold" font-family="sans-serif">AMEX</text></svg>
+  <svg viewBox="0 0 38 24" class="nmd-pay__icon" role="img" aria-label="PayPal"><rect width="38" height="24" rx="3" fill="#F5F7FA" stroke="#E8E8E8"/><text x="19" y="14" text-anchor="middle" fill="#003087" font-size="7" font-weight="bold" font-family="sans-serif">PayPal</text></svg>
+  <svg viewBox="0 0 38 24" class="nmd-pay__icon" role="img" aria-label="Apple Pay"><rect width="38" height="24" rx="3" fill="#000"/><text x="19" y="14.5" text-anchor="middle" fill="#fff" font-size="6.5" font-weight="500" font-family="sans-serif"> Pay</text></svg>
 </div>
 
 {% stylesheet %}
-  .payment-icons {
-    width: 100%;
-  }
-
-  .payment-icons__list {
-    display: flex;
-    align-items: center;
-    justify-content: var(--alignment);
-    flex-wrap: wrap;
-    gap: var(--icon-gap);
-    margin: 0;
-    padding: 0;
-  }
-
-  .payment-icons__item {
-    display: flex;
-    align-items: center;
-  }
+  .nmd-pay { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
+  .nmd-pay__label { font-size: 0.75rem; opacity: 0.55; margin-inline-end: 2px; }
+  .nmd-pay__icon { height: 22px; width: auto; border-radius: 3px; }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:names.payment_icons",
+  "name": "Payment icons",
   "tag": null,
   "settings": [
-    {
-      "type": "select",
-      "id": "horizontal_alignment",
-      "label": "t:settings.alignment",
-      "options": [
-        {
-          "value": "flex-start",
-          "label": "t:options.left"
-        },
-        {
-          "value": "center",
-          "label": "t:options.center"
-        },
-        {
-          "value": "flex-end",
-          "label": "t:options.right"
-        },
-        {
-          "value": "space-between",
-          "label": "t:options.space_between"
-        }
-      ],
-      "default": "flex-start"
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "t:settings.gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 10
-    },
-    {
-      "type": "header",
-      "content": "t:content.padding"
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-start",
-      "label": "t:settings.left",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-end",
-      "label": "t:settings.right",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    }
+    { "type": "text", "id": "label", "label": "Label", "default": "Secure checkout:" },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 4 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding-inline-start", "label": "t:settings.left", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end", "label": "t:settings.right", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
   ],
-  "presets": [
-    {
-      "name": "t:names.payment_icons",
-      "category": "t:categories.footer"
-    }
-  ]
+  "presets": [ { "name": "Payment icons" } ]
 }
 {% endschema %}

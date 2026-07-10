@@ -65,12 +65,9 @@
         style: logo_style
       %}
     {%- else -%}
-      <img
-        src="{{ 'nomadad-logo.png' | asset_url }}"
-        alt="{{ shop.name | escape }}"
-        class="header-logo__image header-logo__image--fallback"
-        loading="eager"
-      >
+      <span class="header-logo__wordmark" aria-label="{{ shop.name | escape }}">
+        <span class="header-logo__wordmark-noma">NOMA</span><span class="header-logo__wordmark-dad">DAD</span>
+      </span>
     {%- endif -%}
   </span>
 
@@ -89,12 +86,9 @@
           style: inverse_logo_style
         %}
       {%- else -%}
-        <img
-          src="{{ 'nomadad-logo.png' | asset_url }}"
-          alt="{{ shop.name | escape }}"
-          class="header-logo__image header-logo__image--fallback"
-          loading="eager"
-        >
+        <span class="header-logo__wordmark header-logo__wordmark--inverse" aria-label="{{ shop.name | escape }}">
+          <span class="header-logo__wordmark-noma">NOMA</span><span class="header-logo__wordmark-dad">DAD</span>
+        </span>
       {%- endif -%}
     </span>
   {% endif %}
@@ -149,15 +143,32 @@
     }
   }
 
-  .header-logo__image--fallback {
-    height: 48px;
-    width: auto;
-    max-width: 70vw;
-    padding-block: 4px;
+  .header-logo__wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: var(--font-body--family);
+    font-size: 1.3rem;
+    line-height: 1;
 
     @media screen and (min-width: 750px) {
-      height: 66px;
+      font-size: 1.5rem;
     }
+  }
+
+  .header-logo__wordmark-noma {
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--color-foreground);
+  }
+
+  .header-logo__wordmark-dad {
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: var(--color-primary);
+  }
+
+  .header-logo__wordmark--inverse .header-logo__wordmark-noma {
+    color: currentcolor;
   }
 
   .header-logo:has(.header-logo__image-container--inverse) .header-logo__image-container--original {

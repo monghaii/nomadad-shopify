@@ -1,0 +1,35 @@
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="nmd-sp section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}" data-testid="social-proof-{{ section.id }}">
+  <div class="nmd-sp__inner">
+    {%- if section.settings.item_1 != blank -%}<span class="nmd-sp__item">⚡ {{ section.settings.item_1 }}</span>{%- endif -%}
+    {%- if section.settings.item_2 != blank -%}<span class="nmd-sp__sep">|</span><span class="nmd-sp__item">👥 {{ section.settings.item_2 }}</span>{%- endif -%}
+    {%- if section.settings.item_3 != blank -%}<span class="nmd-sp__sep nmd-sp__sep--hide">|</span><span class="nmd-sp__item nmd-sp__item--hide">🏅 {{ section.settings.item_3 }}</span>{%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nmd-sp { background: #fffbeb; border-block-end: 1px solid #fde68a; }
+  .nmd-sp__inner {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 16px;
+    padding-block: 8px; text-align: center;
+  }
+  .nmd-sp__item { font-size: 0.75rem; font-weight: 600; color: #b45309; white-space: nowrap; }
+  .nmd-sp__sep { color: #fcd34d; }
+  @media screen and (max-width: 640px) {
+    .nmd-sp__item--hide, .nmd-sp__sep--hide { display: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Social proof bar",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-1" },
+    { "type": "select", "id": "section_width", "label": "t:settings.width", "options": [ { "value": "page-width", "label": "t:options.page" }, { "value": "full-width", "label": "t:options.full" } ], "default": "full-width" },
+    { "type": "text", "id": "item_1", "label": "Item 1", "default": "47 bought in last 24hrs" },
+    { "type": "text", "id": "item_2", "label": "Item 2", "default": "2,000+ happy travelers" },
+    { "type": "text", "id": "item_3", "label": "Item 3", "default": "Physician Designed" }
+  ],
+  "presets": [ { "name": "Social proof bar", "category": "t:categories.storytelling" } ]
+}
+{% endschema %}

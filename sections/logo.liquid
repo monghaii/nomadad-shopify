@@ -70,12 +70,9 @@
       </div>
     {%- elsif settings.logo == blank -%}
       <div class="logo-section__image-wrapper">
-        <img
-          src="{{ 'nomadad-logo.png' | asset_url }}"
-          alt="{{ shop.name | escape }}"
-          class="logo-section__image logo-section__image--fallback"
-          loading="lazy"
-        >
+        <span class="logo-section__wordmark" aria-label="{{ shop.name | escape }}">
+          <span class="logo-section__wordmark-noma">NOMA</span><span class="logo-section__wordmark-dad">DAD</span>
+        </span>
       </div>
     {% else %}
       {% render 'jumbo-text', text: shop.name, block_settings: section.settings %}
@@ -126,15 +123,30 @@
     width: 100%;
   }
 
-  .logo-section__image--fallback {
-    width: auto;
-    height: var(--logo-height, 56px);
-    max-width: 280px;
+  .logo-section__wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: var(--font-body--family);
+    font-size: var(--logo-height, 34px);
+    line-height: 1;
+    white-space: nowrap;
 
     @media screen and (max-width: 749px) {
-      height: var(--logo-height-mobile, var(--logo-height, 40px));
-      max-width: 220px;
+      font-size: var(--logo-height-mobile, var(--logo-height, 28px));
     }
+  }
+
+  .logo-section__wordmark-noma {
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: currentcolor;
+    opacity: 0.85;
+  }
+
+  .logo-section__wordmark-dad {
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: var(--color-primary);
   }
 {% endstylesheet %}
 
