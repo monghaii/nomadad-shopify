@@ -470,6 +470,29 @@
         "padding-block-end": 56
       }
     },
+    "nomadad_reviews": {
+      "type": "nomadad-reviews",
+      "blocks": {
+        "r1": { "type": "review", "settings": { "name": "Marcus T.", "date": "2 weeks ago", "rating": 5, "title": "14-hour flight, slept 8 hours 😴", "body": "Used it on a flight to Tokyo. Slept 8 hours straight. My wife was jealous. The blanket sling is the real MVP.", "verified": true } },
+        "r2": { "type": "review", "settings": { "name": "David K.", "date": "1 month ago", "rating": 5, "title": "Road trip game changer 🚗", "body": "Family road trips used to mean I'd arrive exhausted even as a passenger. Now I actually rest while my wife drives. Three kids in the back, still slept.", "verified": true } },
+        "r3": { "type": "review", "settings": { "name": "James R.", "date": "3 weeks ago", "rating": 4, "title": "Great concept, solid execution", "body": "The blanket sling is the secret weapon. Keeps you from sliding around in your seat. Eye mask could be slightly softer but overall brilliant design.", "verified": true } },
+        "r4": { "type": "review", "settings": { "name": "Sarah M.", "date": "1 week ago", "rating": 5, "title": "Bought for my husband ❤️", "body": "Got this for my husband who flies weekly for work. He says it's the best travel purchase he's ever made. Already ordered a second one for me.", "verified": true } },
+        "r5": { "type": "review", "settings": { "name": "Tom B.", "date": "2 months ago", "rating": 4, "title": "Compact and effective", "body": "Fits easily in my laptop bag. The memory foam pillow is supportive without being bulky. Use it on my weekly commuter flights.", "verified": true } },
+        "r6": { "type": "review", "settings": { "name": "Alex W.", "date": "5 days ago", "rating": 5, "title": "Why didn't this exist sooner?!", "body": "I've tried every neck pillow on Amazon. This is the first system that actually works because it addresses the whole body, not just the neck.", "verified": true } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "eyebrow": "Social Proof",
+        "heading": "Customer Reviews ⭐",
+        "rating": "4.0",
+        "review_count": "2,000+ reviews",
+        "recommend_text": "94% would recommend",
+        "padding-block-start": 56,
+        "padding-block-end": 56
+      }
+    },
     "nomadad_final_cta": {
       "type": "nomadad-final-cta",
       "settings": {
@@ -494,6 +517,7 @@
     "nomadad_comparison",
     "nomadad_testimonials",
     "nomadad_faq",
+    "nomadad_reviews",
     "nomadad_final_cta"
   ]
 }

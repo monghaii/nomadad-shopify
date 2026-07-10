@@ -12,52 +12,15 @@
   "name": "Header",
   "sections": {
     "announcement_bar": {
-      "type": "header-announcements",
+      "type": "nomadad-marquee",
       "blocks": {
-        "announcement_promo": {
-          "type": "_announcement",
-          "settings": {
-            "text": "🎉 15% OFF your first order — use code <b>NOMADAD15</b>",
-            "font": "var(--font-body--family)",
-            "font_size": "0.75rem",
-            "weight": "700",
-            "letter_spacing": "normal",
-            "case": "none"
-          }
-        },
-        "announcement_shipping": {
-          "type": "_announcement",
-          "settings": {
-            "text": "🚚 FREE shipping within the US",
-            "font": "var(--font-body--family)",
-            "font_size": "0.75rem",
-            "weight": "700",
-            "letter_spacing": "normal",
-            "case": "none"
-          }
-        },
-        "announcement_designed": {
-          "type": "_announcement",
-          "settings": {
-            "text": "🩺 Physician-designed travel comfort",
-            "font": "var(--font-body--family)",
-            "font_size": "0.75rem",
-            "weight": "700",
-            "letter_spacing": "normal",
-            "case": "none"
-          }
-        }
+        "m1": { "type": "message", "settings": { "text": "🎉 15% OFF first order — use code NOMADAD15" } },
+        "m2": { "type": "message", "settings": { "text": "🚚 FREE shipping within the US" } }
       },
-      "block_order": [
-        "announcement_promo",
-        "announcement_shipping",
-        "announcement_designed"
-      ],
+      "block_order": ["m1", "m2"],
       "settings": {
-        "speed": 4,
-        "section_width": "full-width",
         "color_scheme": "scheme-4",
-        "divider_width": 0,
+        "speed": 18,
         "padding-block-start": 9,
         "padding-block-end": 9
       }

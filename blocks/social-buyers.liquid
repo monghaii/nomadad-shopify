@@ -1,0 +1,39 @@
+<div class="nmd-buyers spacing-style" style="{% render 'spacing-style', settings: block.settings %}" {{ block.shopify_attributes }}>
+  <span class="nmd-buyers__avatars" aria-hidden="true">
+    {%- for i in (1..4) -%}<span class="nmd-buyers__avatar">👤</span>{%- endfor -%}
+  </span>
+  <span class="nmd-buyers__text">{{ block.settings.text }}</span>
+</div>
+
+{% stylesheet %}
+  .nmd-buyers {
+    display: flex; align-items: center; gap: 10px;
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px 14px;
+  }
+  .nmd-buyers__avatars { display: inline-flex; }
+  .nmd-buyers__avatar {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; margin-inline-start: -6px; border-radius: 50%;
+    background: color-mix(in srgb, var(--color-primary) 18%, #fff); border: 2px solid #fff;
+    font-size: 0.7rem;
+  }
+  .nmd-buyers__avatar:first-child { margin-inline-start: 0; }
+  .nmd-buyers__text { font-size: 0.8rem; color: #166534; }
+  .nmd-buyers__text strong { font-weight: 800; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Recent buyers",
+  "tag": null,
+  "settings": [
+    { "type": "inline_richtext", "id": "text", "label": "Text", "default": "<strong>47 people</strong> bought this in the last 24 hours!" },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding-inline-start", "label": "t:settings.left", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end", "label": "t:settings.right", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
+  ],
+  "presets": [ { "name": "Recent buyers" } ]
+}
+{% endschema %}

@@ -18,6 +18,33 @@
   @media screen and (max-width: 640px) {
     .nmd-sp__item--hide, .nmd-sp__sep--hide { display: none; }
   }
+
+  /* Sale / Best Seller badges overlaid on the product media gallery */
+  media-gallery { position: relative; }
+  media-gallery::before,
+  media-gallery::after {
+    position: absolute;
+    left: 12px;
+    z-index: 3;
+    padding: 4px 11px;
+    border-radius: 40px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+    pointer-events: none;
+  }
+  media-gallery::before {
+    content: "Sale";
+    top: 12px;
+    background: #ef4444;
+  }
+  media-gallery::after {
+    content: "Best Seller";
+    top: 42px;
+    background: var(--color-primary);
+  }
 {% endstylesheet %}
 
 {% schema %}

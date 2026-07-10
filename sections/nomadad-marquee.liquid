@@ -1,0 +1,84 @@
+{%- liquid
+  assign items = section.blocks
+  assign speed = section.settings.speed | default: 18
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="nmd-marquee color-{{ section.settings.color_scheme }}" data-testid="marquee-{{ section.id }}" style="--nmd-marquee-speed: {{ speed }}s; --nmd-marquee-pt: {{ section.settings.padding-block-start }}px; --nmd-marquee-pb: {{ section.settings.padding-block-end }}px;">
+  <div class="nmd-marquee__track" aria-hidden="false">
+    {%- for pass in (1..2) -%}
+      <div class="nmd-marquee__group" {% if pass == 2 %}aria-hidden="true"{% endif %}>
+        {%- for block in items -%}
+          <span class="nmd-marquee__item" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+          <span class="nmd-marquee__dot">•</span>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nmd-marquee {
+    overflow: hidden;
+    padding-block: var(--nmd-marquee-pt, 9px) var(--nmd-marquee-pb, 9px);
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+  .nmd-marquee__track {
+    display: flex;
+    width: max-content;
+    animation: nmd-marquee-scroll var(--nmd-marquee-speed, 18s) linear infinite;
+  }
+  .nmd-marquee__group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .nmd-marquee__item {
+    padding-inline: 24px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .nmd-marquee__dot { opacity: 0.4; }
+  @keyframes nmd-marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nmd-marquee__track { animation: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Marquee bar",
+  "enabled_on": { "groups": ["header"] },
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Text", "default": "🎉 15% OFF first order — use code NOMADAD15" }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-4" },
+    { "type": "range", "id": "speed", "label": "Scroll duration", "min": 6, "max": 40, "step": 1, "unit": "s", "default": 18 },
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 60, "step": 1, "unit": "px", "default": 9 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 60, "step": 1, "unit": "px", "default": 9 }
+  ],
+  "presets": [
+    {
+      "name": "Marquee bar",
+      "blocks": [
+        { "type": "message", "settings": { "text": "🎉 15% OFF first order — use code NOMADAD15" } },
+        { "type": "message", "settings": { "text": "🚚 FREE shipping within the US" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

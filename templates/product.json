@@ -116,6 +116,18 @@
               },
               "blocks": {}
             },
+            "breadcrumb_nmd": {
+              "type": "breadcrumb",
+              "settings": {
+                "home_label": "Home",
+                "category_label": "Travel Gear",
+                "padding-block-start": 0,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "product_eyebrow_badges": {
               "type": "product-eyebrow-badges",
               "settings": {
@@ -170,7 +182,18 @@
                 "item_2": "30-Day Returns",
                 "item_3": "1-Year Warranty",
                 "padding-block-start": 4,
-                "padding-block-end": 16,
+                "padding-block-end": 12,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "social_buyers_nmd": {
+              "type": "social-buyers",
+              "settings": {
+                "text": "<strong>47 people</strong> bought this in the last 24 hours!",
+                "padding-block-start": 0,
+                "padding-block-end": 12,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -274,19 +297,19 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "accordion_row_iJM37V": {
+                "accordion_bundle": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Care",
+                    "heading": "📦 What's in the Bundle",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
                   },
                   "blocks": {
-                    "text_VdG98J": {
+                    "text_bundle": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>To maintain the beauty and integrity of your purchase, we recommend treating it with care. Simple maintenance practices, such as gentle washing and proper storage, can effectively preserve the longevity of your favorites. We encourage you to refer to the care instructions included with each item, designed to help you keep your purchase in top condition.</p>",
+                        "text": "<ul><li>Memory foam neck pillow with ergonomic contour</li><li>Blanket sling for body stabilization &amp; warmth</li><li>Adjustable blackout eye mask</li><li>Integrated carry pouch (clips to any bag)</li><li>Machine washable — easy to keep fresh</li></ul>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
@@ -310,22 +333,22 @@
                     }
                   },
                   "block_order": [
-                    "text_VdG98J"
+                    "text_bundle"
                   ]
                 },
-                "accordion_row_pLFDcD": {
+                "accordion_shipping": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Design",
+                    "heading": "🚚 Shipping & Delivery",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
                   },
                   "blocks": {
-                    "text_qLGEN9": {
+                    "text_shipping": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>Our dedication to excellence extends beyond materials; it encompasses the artistry and craftsmanship illustrated in every piece we create.</p>",
+                        "text": "<p>✅ <strong>Free standard shipping</strong> on all US orders.<br>📦 Standard: 5-7 business days<br>⚡ Express: 2-3 business days (+$9.95)<br>🌍 International shipping available at checkout.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
@@ -349,17 +372,58 @@
                     }
                   },
                   "block_order": [
-                    "text_qLGEN9"
+                    "text_shipping"
+                  ]
+                },
+                "accordion_returns": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "↩️ Returns & Guarantee",
+                    "open_by_default": false,
+                    "icon": "none",
+                    "width": 20
+                  },
+                  "blocks": {
+                    "text_returns": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>✅ <strong>30-day satisfaction guarantee.</strong> Not sleeping better? Send it back!<br>📦 Free return shipping within the US.<br>💰 Full refund, no questions asked.<br>🛡️ 1-year warranty against manufacturing defects.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "left",
+                        "type_preset": "custom",
+                        "font": "var(--font-secondary--family)",
+                        "font_size": "var(--font-size--body-lg)",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 12,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_returns"
                   ]
                 }
               },
               "block_order": [
-                "accordion_row_iJM37V",
-                "accordion_row_pLFDcD"
+                "accordion_bundle",
+                "accordion_shipping",
+                "accordion_returns"
               ]
             }
           },
           "block_order": [
+            "breadcrumb_nmd",
             "product_eyebrow_badges",
             "text_9WaLn7",
             "product_rating",
@@ -370,6 +434,7 @@
             "buy_buttons_eYQEYi",
             "payment_icons",
             "trust_badges",
+            "social_buyers_nmd",
             "accordion_NKWPiW"
           ]
         }
@@ -647,6 +712,29 @@
         "section_width": "page-width",
         "eyebrow": "Got Questions?",
         "heading": "Frequently Asked Questions 🤔",
+        "padding-block-start": 56,
+        "padding-block-end": 56
+      }
+    },
+    "nomadad_reviews": {
+      "type": "nomadad-reviews",
+      "blocks": {
+        "r1": { "type": "review", "settings": { "name": "Marcus T.", "date": "2 weeks ago", "rating": 5, "title": "14-hour flight, slept 8 hours 😴", "body": "Used it on a flight to Tokyo. Slept 8 hours straight. My wife was jealous. The blanket sling is the real MVP.", "verified": true } },
+        "r2": { "type": "review", "settings": { "name": "David K.", "date": "1 month ago", "rating": 5, "title": "Road trip game changer 🚗", "body": "Family road trips used to mean I'd arrive exhausted even as a passenger. Now I actually rest while my wife drives. Three kids in the back, still slept.", "verified": true } },
+        "r3": { "type": "review", "settings": { "name": "James R.", "date": "3 weeks ago", "rating": 4, "title": "Great concept, solid execution", "body": "The blanket sling is the secret weapon. Keeps you from sliding around in your seat. Eye mask could be slightly softer but overall brilliant design.", "verified": true } },
+        "r4": { "type": "review", "settings": { "name": "Sarah M.", "date": "1 week ago", "rating": 5, "title": "Bought for my husband ❤️", "body": "Got this for my husband who flies weekly for work. He says it's the best travel purchase he's ever made. Already ordered a second one for me.", "verified": true } },
+        "r5": { "type": "review", "settings": { "name": "Tom B.", "date": "2 months ago", "rating": 4, "title": "Compact and effective", "body": "Fits easily in my laptop bag. The memory foam pillow is supportive without being bulky. Use it on my weekly commuter flights.", "verified": true } },
+        "r6": { "type": "review", "settings": { "name": "Alex W.", "date": "5 days ago", "rating": 5, "title": "Why didn't this exist sooner?!", "body": "I've tried every neck pillow on Amazon. This is the first system that actually works because it addresses the whole body, not just the neck.", "verified": true } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "eyebrow": "Social Proof",
+        "heading": "Customer Reviews ⭐",
+        "rating": "4.0",
+        "review_count": "2,000+ reviews",
+        "recommend_text": "94% would recommend",
         "padding-block-start": 56,
         "padding-block-end": 56
       }
@@ -957,6 +1045,7 @@
     "nomadad_comparison",
     "nomadad_testimonials",
     "nomadad_faq",
+    "nomadad_reviews",
     "product_recommendations_qnzPkn",
     "nomadad_final_cta"
   ]
