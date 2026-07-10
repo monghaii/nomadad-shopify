@@ -8,6 +8,19 @@
  * ------------------------------------------------------------
  */{
   "sections": {
+    "nomadad_hero": {
+      "type": "nomadad-hero",
+      "settings": {
+        "min_height": 580,
+        "overlay_opacity": 55,
+        "text_alignment": "center",
+        "eyebrow": "Physician-designed travel comfort",
+        "heading": "Pack like a pro. Travel like a dad.",
+        "subheading": "The complete travel comfort system for dads on the move. Real rest on planes, road trips, and layovers.",
+        "button_label": "🛒 Shop the NomaDad Kit",
+        "button_link": "shopify://collections/all"
+      }
+    },
     "nomadad_social_proof": {
       "type": "nomadad-social-proof",
       "settings": {
@@ -293,77 +306,6 @@
         "padding-block-end": 56
       }
     },
-    "nomadad_faq": {
-      "type": "nomadad-faq",
-      "blocks": {
-        "f1": {
-          "type": "faq",
-          "settings": {
-            "question": "Will this fit in my carry-on?",
-            "answer": "Absolutely! The entire kit packs into its own pouch — about the size of a water bottle. It clips to the outside of your bag too. ✈️"
-          }
-        },
-        "f2": {
-          "type": "faq",
-          "settings": {
-            "question": "Is the neck pillow inflatable?",
-            "answer": "Nope — it's memory foam! No pumping, no valves, no popping mid-flight. Just pull it out and it's ready in seconds."
-          }
-        },
-        "f3": {
-          "type": "faq",
-          "settings": {
-            "question": "Can I wash it?",
-            "answer": "Yes! All components are machine washable. Remove the memory foam insert, toss the covers in on a gentle cycle, and air dry. 🧼"
-          }
-        },
-        "f4": {
-          "type": "faq",
-          "settings": {
-            "question": "Does the blanket sling actually work?",
-            "answer": "That's the magic. It wraps around your torso and the seat, creating gentle resistance that keeps you upright — like a cozy seatbelt for sleeping. 💤"
-          }
-        },
-        "f5": {
-          "type": "faq",
-          "settings": {
-            "question": "What if I wear glasses?",
-            "answer": "No problem! The eye mask has a low-profile nose bridge that works whether your glasses are on or pushed up on your head."
-          }
-        },
-        "f6": {
-          "type": "faq",
-          "settings": {
-            "question": "Is this just for planes?",
-            "answer": "Nope! Road trips, trains, airport layovers, camping, even your couch. Anywhere you need to rest in a seated position. 🚗🚂"
-          }
-        },
-        "f7": {
-          "type": "faq",
-          "settings": {
-            "question": "What's your return policy?",
-            "answer": "30 days, no questions asked. If you're not sleeping better, send it back for a full refund. We even cover US return shipping. 💯"
-          }
-        }
-      },
-      "block_order": [
-        "f1",
-        "f2",
-        "f3",
-        "f4",
-        "f5",
-        "f6",
-        "f7"
-      ],
-      "settings": {
-        "color_scheme": "scheme-1",
-        "section_width": "page-width",
-        "eyebrow": "Got Questions?",
-        "heading": "Frequently Asked Questions 🤔",
-        "padding-block-start": 56,
-        "padding-block-end": 56
-      }
-    },
     "nomadad_reviews": {
       "type": "nomadad-reviews",
       "blocks": {
@@ -454,6 +396,77 @@
         "padding-block-end": 56
       }
     },
+    "nomadad_faq": {
+      "type": "nomadad-faq",
+      "blocks": {
+        "f1": {
+          "type": "faq",
+          "settings": {
+            "question": "Will this fit in my carry-on?",
+            "answer": "Absolutely! The entire kit packs into its own pouch — about the size of a water bottle. It clips to the outside of your bag too. ✈️"
+          }
+        },
+        "f2": {
+          "type": "faq",
+          "settings": {
+            "question": "Is the neck pillow inflatable?",
+            "answer": "Nope — it's memory foam! No pumping, no valves, no popping mid-flight. Just pull it out and it's ready in seconds."
+          }
+        },
+        "f3": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I wash it?",
+            "answer": "Yes! All components are machine washable. Remove the memory foam insert, toss the covers in on a gentle cycle, and air dry. 🧼"
+          }
+        },
+        "f4": {
+          "type": "faq",
+          "settings": {
+            "question": "Does the blanket sling actually work?",
+            "answer": "That's the magic. It wraps around your torso and the seat, creating gentle resistance that keeps you upright — like a cozy seatbelt for sleeping. 💤"
+          }
+        },
+        "f5": {
+          "type": "faq",
+          "settings": {
+            "question": "What if I wear glasses?",
+            "answer": "No problem! The eye mask has a low-profile nose bridge that works whether your glasses are on or pushed up on your head."
+          }
+        },
+        "f6": {
+          "type": "faq",
+          "settings": {
+            "question": "Is this just for planes?",
+            "answer": "Nope! Road trips, trains, airport layovers, camping, even your couch. Anywhere you need to rest in a seated position. 🚗🚂"
+          }
+        },
+        "f7": {
+          "type": "faq",
+          "settings": {
+            "question": "What's your return policy?",
+            "answer": "30 days, no questions asked. If you're not sleeping better, send it back for a full refund. We even cover US return shipping. 💯"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6",
+        "f7"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "eyebrow": "Got Questions?",
+        "heading": "Frequently Asked Questions 🤔",
+        "padding-block-start": 56,
+        "padding-block-end": 56
+      }
+    },
     "nomadad_final_cta": {
       "type": "nomadad-final-cta",
       "settings": {
@@ -468,31 +481,17 @@
         "padding-block-start": 88,
         "padding-block-end": 88
       }
-    },
-    "nomadad_hero": {
-      "type": "nomadad-hero",
-      "settings": {
-        "color_scheme": "scheme-5",
-        "min_height": 580,
-        "overlay_opacity": 55,
-        "text_alignment": "center",
-        "eyebrow": "Physician-designed travel comfort",
-        "heading": "Pack like a pro. Travel like a dad.",
-        "subheading": "The complete travel comfort system for dads on the move. Real rest on planes, road trips, and layovers.",
-        "button_label": "🛒 Shop the NomaDad Kit",
-        "button_link": "shopify://collections/all"
-      }
     }
   },
   "order": [
-    "nomadad_social_proof",
     "nomadad_hero",
+    "nomadad_social_proof",
     "featured_product_mTUbKC",
     "nomadad_usecases",
     "nomadad_comparison",
     "nomadad_testimonials",
-    "nomadad_faq",
     "nomadad_reviews",
+    "nomadad_faq",
     "nomadad_final_cta"
   ]
 }

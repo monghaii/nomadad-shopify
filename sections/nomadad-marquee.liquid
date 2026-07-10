@@ -3,7 +3,6 @@
   assign speed = section.settings.speed | default: 18
 -%}
 
-<div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div class="nmd-marquee color-{{ section.settings.color_scheme }}" data-testid="marquee-{{ section.id }}" style="--nmd-marquee-speed: {{ speed }}s; --nmd-marquee-pt: {{ section.settings.padding-block-start }}px; --nmd-marquee-pb: {{ section.settings.padding-block-end }}px;">
   <div class="nmd-marquee__track" aria-hidden="false">
     {%- for pass in (1..2) -%}
