@@ -18,112 +18,6 @@
         "item_3": "Physician Designed"
       }
     },
-    "hero_iyt6zg": {
-      "type": "hero",
-      "blocks": {
-        "text_tzGazA": {
-          "type": "text",
-          "name": "t:names.text",
-          "settings": {
-            "text": "<h1>Pack like a pro.<br/>Travel like a dad.</h1>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "custom",
-            "font": "var(--font-heading--family)",
-            "font_size": "",
-            "line_height": "tight",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "text_sub_nmd": {
-          "type": "text",
-          "name": "t:names.text",
-          "settings": {
-            "text": "<p>The complete travel comfort system for dads on the move. Physician-designed for real rest on planes, road trips, and layovers.</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "custom",
-            "font": "var(--font-body--family)",
-            "font_size": "1.05rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "button_hero_nmd": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "🛒 Shop the NomaDad Kit",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "text_tzGazA",
-        "text_sub_nmd",
-        "button_hero_nmd"
-      ],
-      "settings": {
-        "media_type_1": "image",
-        "media_type_2": "image",
-        "stack_media_on_mobile": false,
-        "custom_mobile_media": false,
-        "media_type_1_mobile": "image",
-        "media_type_2_mobile": "image",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 20,
-        "section_width": "full-width",
-        "section_height": "large",
-        "section_height_custom": 50,
-        "color_scheme": "scheme-5",
-        "toggle_overlay": false,
-        "overlay_color": "#00000099",
-        "overlay_style": "gradient",
-        "gradient_direction": "to top",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
     "featured_product_mTUbKC": {
       "type": "featured-product",
       "blocks": {
@@ -473,14 +367,81 @@
     "nomadad_reviews": {
       "type": "nomadad-reviews",
       "blocks": {
-        "r1": { "type": "review", "settings": { "name": "Marcus T.", "date": "2 weeks ago", "rating": 5, "title": "14-hour flight, slept 8 hours 😴", "body": "Used it on a flight to Tokyo. Slept 8 hours straight. My wife was jealous. The blanket sling is the real MVP.", "verified": true } },
-        "r2": { "type": "review", "settings": { "name": "David K.", "date": "1 month ago", "rating": 5, "title": "Road trip game changer 🚗", "body": "Family road trips used to mean I'd arrive exhausted even as a passenger. Now I actually rest while my wife drives. Three kids in the back, still slept.", "verified": true } },
-        "r3": { "type": "review", "settings": { "name": "James R.", "date": "3 weeks ago", "rating": 4, "title": "Great concept, solid execution", "body": "The blanket sling is the secret weapon. Keeps you from sliding around in your seat. Eye mask could be slightly softer but overall brilliant design.", "verified": true } },
-        "r4": { "type": "review", "settings": { "name": "Sarah M.", "date": "1 week ago", "rating": 5, "title": "Bought for my husband ❤️", "body": "Got this for my husband who flies weekly for work. He says it's the best travel purchase he's ever made. Already ordered a second one for me.", "verified": true } },
-        "r5": { "type": "review", "settings": { "name": "Tom B.", "date": "2 months ago", "rating": 4, "title": "Compact and effective", "body": "Fits easily in my laptop bag. The memory foam pillow is supportive without being bulky. Use it on my weekly commuter flights.", "verified": true } },
-        "r6": { "type": "review", "settings": { "name": "Alex W.", "date": "5 days ago", "rating": 5, "title": "Why didn't this exist sooner?!", "body": "I've tried every neck pillow on Amazon. This is the first system that actually works because it addresses the whole body, not just the neck.", "verified": true } }
+        "r1": {
+          "type": "review",
+          "settings": {
+            "name": "Marcus T.",
+            "date": "2 weeks ago",
+            "rating": 5,
+            "title": "14-hour flight, slept 8 hours 😴",
+            "body": "Used it on a flight to Tokyo. Slept 8 hours straight. My wife was jealous. The blanket sling is the real MVP.",
+            "verified": true
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "name": "David K.",
+            "date": "1 month ago",
+            "rating": 5,
+            "title": "Road trip game changer 🚗",
+            "body": "Family road trips used to mean I'd arrive exhausted even as a passenger. Now I actually rest while my wife drives. Three kids in the back, still slept.",
+            "verified": true
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "name": "James R.",
+            "date": "3 weeks ago",
+            "rating": 4,
+            "title": "Great concept, solid execution",
+            "body": "The blanket sling is the secret weapon. Keeps you from sliding around in your seat. Eye mask could be slightly softer but overall brilliant design.",
+            "verified": true
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "name": "Sarah M.",
+            "date": "1 week ago",
+            "rating": 5,
+            "title": "Bought for my husband ❤️",
+            "body": "Got this for my husband who flies weekly for work. He says it's the best travel purchase he's ever made. Already ordered a second one for me.",
+            "verified": true
+          }
+        },
+        "r5": {
+          "type": "review",
+          "settings": {
+            "name": "Tom B.",
+            "date": "2 months ago",
+            "rating": 4,
+            "title": "Compact and effective",
+            "body": "Fits easily in my laptop bag. The memory foam pillow is supportive without being bulky. Use it on my weekly commuter flights.",
+            "verified": true
+          }
+        },
+        "r6": {
+          "type": "review",
+          "settings": {
+            "name": "Alex W.",
+            "date": "5 days ago",
+            "rating": 5,
+            "title": "Why didn't this exist sooner?!",
+            "body": "I've tried every neck pillow on Amazon. This is the first system that actually works because it addresses the whole body, not just the neck.",
+            "verified": true
+          }
+        }
       },
-      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"],
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "section_width": "page-width",
@@ -507,11 +468,25 @@
         "padding-block-start": 88,
         "padding-block-end": 88
       }
+    },
+    "nomadad_hero": {
+      "type": "nomadad-hero",
+      "settings": {
+        "color_scheme": "scheme-5",
+        "min_height": 580,
+        "overlay_opacity": 55,
+        "text_alignment": "center",
+        "eyebrow": "Physician-designed travel comfort",
+        "heading": "Pack like a pro. Travel like a dad.",
+        "subheading": "The complete travel comfort system for dads on the move. Real rest on planes, road trips, and layovers.",
+        "button_label": "🛒 Shop the NomaDad Kit",
+        "button_link": "shopify://collections/all"
+      }
     }
   },
   "order": [
     "nomadad_social_proof",
-    "hero_iyt6zg",
+    "nomadad_hero",
     "featured_product_mTUbKC",
     "nomadad_usecases",
     "nomadad_comparison",

@@ -1,0 +1,114 @@
+{%- liquid
+  assign cta_link = section.settings.button_link | default: routes.all_products_collection_url
+  assign overlay = section.settings.overlay_opacity | divided_by: 100.0
+-%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="nmd-hero color-{{ section.settings.color_scheme }}"
+  data-testid="hero-{{ section.id }}"
+  style="--nmd-hero-h: {{ section.settings.min_height }}px; --nmd-hero-overlay: {{ overlay }}; --nmd-align: {{ section.settings.text_alignment }};"
+>
+  <div class="nmd-hero__media">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '600, 900, 1200, 1600, 2000, 2400', alt: section.settings.heading | default: shop.name }}
+    {%- else -%}
+      <img
+        src="{{ 'nomadad-hero.png' | asset_url }}"
+        alt="{{ section.settings.heading | default: shop.name | escape }}"
+        width="1024"
+        height="576"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+  </div>
+  <div class="nmd-hero__overlay"></div>
+  <div class="nmd-hero__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="nmd-hero__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h1 class="nmd-hero__title">{{ section.settings.heading }}</h1>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p class="nmd-hero__sub">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a class="button nmd-hero__button" href="{{ cta_link }}">{{ section.settings.button_label }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nmd-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: var(--nmd-hero-h, 560px);
+    overflow: hidden;
+  }
+  .nmd-hero__media { position: absolute; inset: 0; z-index: 0; }
+  .nmd-hero__media img { width: 100%; height: 100%; object-fit: cover; }
+  .nmd-hero__overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background:
+      linear-gradient(90deg, rgba(18,35,52,var(--nmd-hero-overlay,0.6)) 0%, rgba(18,35,52,calc(var(--nmd-hero-overlay,0.6) * 0.45)) 50%, rgba(18,35,52,var(--nmd-hero-overlay,0.6)) 100%),
+      linear-gradient(0deg, rgba(18,35,52,0.55) 0%, rgba(18,35,52,0) 55%);
+  }
+  .nmd-hero__inner {
+    position: relative; z-index: 2;
+    width: 100%;
+    max-width: 720px;
+    margin-inline: auto;
+    padding: 48px 24px;
+    text-align: var(--nmd-align, center);
+    color: #fff;
+  }
+  .nmd-hero__eyebrow {
+    display: inline-block; margin-block-end: 16px;
+    padding: 5px 14px; border-radius: 40px;
+    background: color-mix(in srgb, var(--color-primary) 85%, transparent);
+    color: #fff; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .nmd-hero__title {
+    font-family: var(--font-heading--family);
+    font-weight: 800;
+    font-size: clamp(2.25rem, 6vw, 4rem);
+    line-height: 1.02;
+    margin: 0 0 18px;
+    color: #fff;
+  }
+  .nmd-hero__sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.5;
+    margin: 0 auto 30px;
+    max-width: 34em;
+    color: rgba(255,255,255,0.82);
+  }
+  .nmd-hero__button { font-weight: 800; padding-inline: 36px; }
+
+  @media screen and (max-width: 749px) {
+    .nmd-hero { min-height: 460px; }
+    .nmd-hero__inner { text-align: center; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Brand hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image (defaults to brand hero)" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-5" },
+    { "type": "range", "id": "min_height", "label": "Minimum height", "min": 360, "max": 900, "step": 20, "unit": "px", "default": 580 },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay darkness", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 55 },
+    { "type": "select", "id": "text_alignment", "label": "Text alignment", "options": [ { "value": "left", "label": "t:options.left" }, { "value": "center", "label": "t:options.center" } ], "default": "center" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Physician-designed travel comfort" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Pack like a pro. Travel like a dad." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "The complete travel comfort system for dads on the move. Real rest on planes, road trips, and layovers." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "🛒 Shop the NomaDad Kit" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [ { "name": "Brand hero", "category": "t:categories.storytelling" } ]
+}
+{% endschema %}
