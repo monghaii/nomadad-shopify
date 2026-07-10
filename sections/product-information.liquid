@@ -116,6 +116,20 @@
         {% render 'price', product_resource: product, show_sale_price_first: true %}
       </div>
 
+      <label class="sticky-add-to-cart__qty">
+        <span class="visually-hidden">{{ 'products.product.quantity.label' | t | default: 'Quantity' }}</span>
+        <select
+          ref="quantitySelect"
+          class="sticky-add-to-cart__qty-select"
+          data-testid="sticky-quantity-select"
+          {% unless current_variant.available %}disabled{% endunless %}
+        >
+          {% for i in (1..10) %}
+            <option value="{{ i }}" {% if i == initial_quantity %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
       <button
         type="button"
         class="sticky-add-to-cart__button add-to-cart-button button"

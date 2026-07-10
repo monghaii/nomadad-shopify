@@ -38,16 +38,18 @@
     background: var(--color-background); border: 1px solid var(--color-border);
     border-radius: 20px; overflow: hidden;
   }
+  .nmd-faq__item { width: 100%; box-sizing: border-box; margin-inline: 0; border: 0; }
+  /* Full-bleed divider between items — identical width whether collapsed or open. */
   .nmd-faq__item + .nmd-faq__item { border-block-start: 1px solid var(--color-border); }
   .nmd-faq__q {
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    box-sizing: border-box; min-height: 64px;
+    box-sizing: border-box; width: 100%; margin-inline: 0; min-height: 64px;
     padding: 18px 22px; cursor: pointer; font-weight: 700; font-size: 0.9rem; list-style: none;
   }
   .nmd-faq__q::-webkit-details-marker { display: none; }
   .nmd-faq__chev { transition: transform 0.2s ease; opacity: 0.5; font-size: 1.1rem; }
   .nmd-faq__item[open] .nmd-faq__chev { transform: rotate(180deg); }
-  .nmd-faq__a { padding: 0 22px 20px; font-size: 0.875rem; line-height: 1.6; opacity: 0.8; }
+  .nmd-faq__a { box-sizing: border-box; width: 100%; margin-inline: 0; padding: 0 22px 20px; font-size: 0.875rem; line-height: 1.6; opacity: 0.8; }
 {% endstylesheet %}
 
 {% schema %}
