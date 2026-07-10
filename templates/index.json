@@ -31,99 +31,6 @@
         "item_3": "Physician Designed"
       }
     },
-    "featured_product_mTUbKC": {
-      "type": "featured-product",
-      "blocks": {
-        "media": {
-          "type": "_media-without-appearance",
-          "static": true,
-          "settings": {
-            "media_type": "image",
-            "video_loop": true,
-            "video_autoplay": false,
-            "image_position": "cover",
-            "video_position": "cover"
-          },
-          "blocks": {}
-        },
-        "featured-product": {
-          "type": "_featured-product",
-          "name": "t:names.product",
-          "static": true,
-          "settings": {},
-          "blocks": {
-            "featured-product-title": {
-              "type": "product-title",
-              "name": "t:names.title",
-              "static": true,
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h5",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "featured-product-price": {
-              "type": "_featured-product-price",
-              "static": true,
-              "settings": {
-                "show_sale_price_first": true,
-                "type_preset": "h5"
-              },
-              "blocks": {}
-            },
-            "featured-product-gallery": {
-              "type": "_featured-product-gallery",
-              "name": "t:names.image",
-              "static": true,
-              "settings": {
-                "image_ratio": "adapt",
-                "constrain_to_viewport": "true"
-              },
-              "blocks": {}
-            },
-            "featured-product-swatches": {
-              "type": "swatches",
-              "name": "t:content.swatches",
-              "static": true,
-              "settings": {
-                "product_swatches_alignment": "flex-start",
-                "product_swatches_alignment_mobile": "flex-start",
-                "hide_padding": false,
-                "product_swatches_padding_top": 4,
-                "product_swatches_padding_bottom": 4,
-                "product_swatches_padding_left": 0,
-                "product_swatches_padding_right": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": []
-        }
-      },
-      "name": "t:names.featured_product",
-      "settings": {
-        "layout": "media-left",
-        "color_scheme": "scheme-3",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
     "nomadad_usecases": {
       "type": "nomadad-usecases",
       "blocks": {
@@ -481,12 +388,22 @@
         "padding-block-start": 88,
         "padding-block-end": 88
       }
+    },
+    "nomadad_featured": {
+      "type": "nomadad-featured-product",
+      "settings": {
+        "product": "airslyng-but-better",
+        "media_position": "left",
+        "eyebrow": "The complete kit",
+        "subtitle": "Everything you need to sleep anywhere — neck pillow, blanket sling, and blackout eye mask in one compact pouch.",
+        "button_label": "Shop the kit"
+      }
     }
   },
   "order": [
     "nomadad_hero",
     "nomadad_social_proof",
-    "featured_product_mTUbKC",
+    "nomadad_featured",
     "nomadad_usecases",
     "nomadad_comparison",
     "nomadad_testimonials",

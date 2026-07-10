@@ -1,0 +1,180 @@
+{%- liquid
+  assign product = section.settings.product
+  if product == blank
+    assign product = collections.all.products.first
+  endif
+-%}
+
+<div class="nmd-fp nmd-fp--{{ section.settings.media_position }}">
+  <div class="nmd-fp__inner">
+    {%- if product != blank -%}
+      <a class="nmd-fp__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+        {%- if product.featured_media != blank -%}
+          {{ product.featured_media | image_url: width: 1400 | image_tag:
+            loading: 'lazy',
+            sizes: '(min-width: 750px) 50vw, 100vw',
+            widths: '400, 600, 800, 1000, 1200, 1400',
+            alt: product.featured_media.alt | default: product.title
+          }}
+        {%- else -%}
+          {{ 'product-apparel-1' | placeholder_svg_tag: 'nmd-fp__placeholder' }}
+        {%- endif -%}
+      </a>
+
+      <div class="nmd-fp__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="nmd-fp__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+
+        <h2 class="nmd-fp__title">
+          <a href="{{ product.url }}">{{ product.title }}</a>
+        </h2>
+
+        <div class="nmd-fp__price">
+          {%- if product.compare_at_price > product.price -%}
+            <span class="nmd-fp__price-sale">{{ product.price | money }}</span>
+            <s class="nmd-fp__price-compare">{{ product.compare_at_price | money }}</s>
+            <span class="nmd-fp__price-badge">Save {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%</span>
+          {%- else -%}
+            <span class="nmd-fp__price-sale">{{ product.price | money }}</span>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="nmd-fp__subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+
+        <a class="nmd-fp__button" href="{{ product.url }}">{{ section.settings.button_label | default: 'Shop now' }}</a>
+      </div>
+    {%- else -%}
+      <p class="nmd-fp__empty">Select a product in the theme editor.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .nmd-fp {
+    background: #F3F1EE;
+    padding-block: 64px;
+  }
+  .nmd-fp__inner {
+    max-width: 1100px;
+    margin-inline: auto;
+    padding-inline: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .nmd-fp--right .nmd-fp__media { order: 2; }
+
+  .nmd-fp__media {
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    aspect-ratio: 1 / 1;
+    line-height: 0;
+  }
+  .nmd-fp__media img,
+  .nmd-fp__media .nmd-fp__placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .nmd-fp__media:hover img { transform: scale(1.03); }
+
+  .nmd-fp__content { max-width: 420px; }
+  .nmd-fp__eyebrow {
+    display: inline-block;
+    margin-block-end: 14px;
+    padding: 5px 14px;
+    border-radius: 40px;
+    background: rgba(53,108,56,0.12);
+    color: #2b5a2e;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .nmd-fp__title {
+    font-family: var(--font-heading--family, inherit);
+    font-weight: 800;
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    line-height: 1.05;
+    margin: 0 0 16px;
+    color: #122334;
+  }
+  .nmd-fp__title a { color: inherit; text-decoration: none; }
+  .nmd-fp__title a:hover { color: #356C38; }
+
+  .nmd-fp__price {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-block-end: 18px;
+  }
+  .nmd-fp__price-sale { font-size: 1.5rem; font-weight: 800; color: #122334; }
+  .nmd-fp__price-compare { font-size: 1.1rem; color: #5B646F; }
+  .nmd-fp__price-badge {
+    background: #356C38; color: #fff;
+    font-size: 0.72rem; font-weight: 700;
+    padding: 4px 10px; border-radius: 40px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  .nmd-fp__subtitle {
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: #5B646F;
+    margin: 0 0 28px;
+  }
+
+  .nmd-fp__button {
+    display: inline-block;
+    background: #356C38;
+    color: #fff;
+    font-weight: 800;
+    text-decoration: none;
+    padding: 15px 40px;
+    border-radius: 12px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .nmd-fp__button:hover { background: #2b5a2e; transform: translateY(-1px); }
+
+  .nmd-fp__empty { text-align: center; color: #5B646F; }
+
+  @media screen and (max-width: 749px) {
+    .nmd-fp { padding-block: 44px; }
+    .nmd-fp__inner { grid-template-columns: 1fr; gap: 28px; }
+    .nmd-fp--right .nmd-fp__media { order: 0; }
+    .nmd-fp__content { max-width: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Featured product",
+  "tag": "section",
+  "class": "nmd-fp-wrapper section-wrapper",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The complete kit" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Everything you need to sleep anywhere — neck pillow, blanket sling, and blackout eye mask in one compact pouch." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the kit" }
+  ],
+  "presets": [ { "name": "Featured product" } ]
+}
+{% endschema %}
