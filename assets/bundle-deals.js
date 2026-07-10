@@ -16,7 +16,7 @@ class BundleDeals extends HTMLElement {
     this.addEventListener('change', this.#onChange);
     this.section.addEventListener('variant:update', this.#onVariantUpdate);
 
-    // Hide the theme's default quantity stepper — the radios control quantity now.
+    // Hide the theme's default quantity stepper if present — radios control it now.
     this.#hideNativeQuantity();
 
     // Apply the initial selection once the form has rendered.
@@ -63,11 +63,34 @@ class BundleDeals extends HTMLElement {
     return Number(checked?.value) || 1;
   }
 
-  /** @returns {HTMLInputElement | null} */
-  #quantityInput() {
-    return /** @type {HTMLInputElement | null} */ (
-      this.section.querySelector('product-form-component input[name="quantity"]')
+  /** @returns {HTMLFormElement | null} */
+  #productForm() {
+    return /** @type {HTMLFormElement | null} */ (
+      this.section.querySelector('product-form-component form[data-type="add-to-cart-form"]') ||
+        this.section.querySelector('product-form-component form')
     );
+  }
+
+  /**
+   * Return the form's quantity input, creating a hidden one if the theme didn't
+   * render a quantity selector. The theme adds to cart via `new FormData(form)`
+   * and the dynamic checkout button serializes the same form, so a hidden
+   * `quantity` field is honored by both.
+   * @returns {HTMLInputElement | null}
+   */
+  #quantityInput() {
+    const form = this.#productForm();
+    if (!form) return null;
+    let input = /** @type {HTMLInputElement | null} */ (form.querySelector('input[name="quantity"]'));
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'quantity';
+      input.value = '1';
+      input.setAttribute('data-bundle-quantity', '');
+      form.appendChild(input);
+    }
+    return input;
   }
 
   /** Write the selected quantity into the product form so both buttons use it. */
@@ -77,15 +100,14 @@ class BundleDeals extends HTMLElement {
     if (!input) return;
     if (Number(input.value) === quantity) return;
     input.value = String(quantity);
-    // Notify the theme's quantity-selector component and form serializers.
+    // Notify any quantity-selector component and form serializers.
     input.dispatchEvent(new Event('input', { bubbles: true }));
     input.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
-  /** Hide the theme's quantity stepper within this product form. */
+  /** Hide the theme's quantity stepper within this product form, if it exists. */
   #hideNativeQuantity() {
-    const input = this.#quantityInput();
-    const wrapper = input?.closest('.quantity-selector-wrapper');
+    const wrapper = this.section.querySelector('.quantity-selector-wrapper');
     const label = this.section.querySelector('.quantity-label');
     if (wrapper instanceof HTMLElement) wrapper.style.display = 'none';
     if (label instanceof HTMLElement) label.style.display = 'none';
