@@ -117,7 +117,7 @@
       </div>
 
       <label class="sticky-add-to-cart__qty">
-        <span class="visually-hidden">{{ 'products.product.quantity.label' | t | default: 'Quantity' }}</span>
+        <span class="visually-hidden">{{ 'accessibility.quantity' | t }}</span>
         <select
           ref="quantitySelect"
           class="sticky-add-to-cart__qty-select"
@@ -291,6 +291,34 @@
 
   .sticky-add-to-cart__price {
     font-weight: var(--font-weight-semibold);
+  }
+
+  .sticky-add-to-cart__qty {
+    flex-shrink: 0;
+    display: inline-flex;
+  }
+
+  .sticky-add-to-cart__qty-select {
+    height: var(--height-buy-buttons);
+    padding: 0 28px 0 12px;
+    border: var(--style-border-width, 1px) solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: var(--style-border-radius-buttons-primary);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-size: var(--font-paragraph-medium--size);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--height-buy-buttons);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23333' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  .sticky-add-to-cart__qty-select:focus-visible {
+    outline: 2px solid var(--color-primary, #356c38);
+    outline-offset: 1px;
   }
 
   .sticky-add-to-cart__button {

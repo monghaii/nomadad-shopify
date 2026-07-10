@@ -82,7 +82,13 @@ class StickyAddToCartComponent extends Component {
     document.addEventListener(ThemeEvents.cartError, this.#handleCartAddComplete, { signal });
     document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityUpdate, { signal });
 
+    // Two-way quantity sync between the sticky dropdown and the bundle-deals radios.
+    // Delegated so it survives the morph on variant updates.
+    this.addEventListener('change', this.#handleQtySelectChange, { signal });
+    this.#bindBundleQuantityMirror();
+
     this.#getInitialQuantity();
+    this.#syncQtySelect();
   }
 
   disconnectedCallback() {
@@ -233,6 +239,8 @@ class StickyAddToCartComponent extends Component {
     if (variant == null) {
       this.#handleVariantUnavailable();
     }
+    // The dropdown was replaced by the morph — rebuild its options and value.
+    this.#syncQtySelect();
     // Restore the current quantity display if needed
     this.#updateButtonText();
   };
@@ -327,6 +335,125 @@ class StickyAddToCartComponent extends Component {
   }
 
   /**
+   * Finds the bundle-deals element for this product (the quantity radios at the top).
+   * @returns {HTMLElement | null}
+   */
+  #getBundleDeals() {
+    const productId = this.dataset.productId;
+    const scope = this.closest('.shopify-section') ?? document;
+    return (
+      (productId && scope.querySelector(`bundle-deals[data-product-id="${productId}"]`)) ||
+      scope.querySelector('bundle-deals')
+    );
+  }
+
+  /**
+   * Gets the sticky bar's quantity <select>.
+   * @returns {HTMLSelectElement | null}
+   */
+  #getQtySelect() {
+    return this.querySelector('[ref="quantitySelect"]');
+  }
+
+  /**
+   * Gets the product form's quantity input, used when there are no bundle radios.
+   * @returns {HTMLInputElement | null}
+   */
+  #getQuantityInput() {
+    const productForm = this.#getProductForm();
+    return productForm?.querySelector('input[name="quantity"]') ?? null;
+  }
+
+  /**
+   * Listens for changes on the bundle-deals radios so the sticky dropdown mirrors
+   * whichever quantity tier is selected at the top of the page. Bound once; the
+   * bundle-deals element persists across sticky-bar morphs.
+   */
+  #bindBundleQuantityMirror() {
+    const bundle = this.#getBundleDeals();
+    if (!bundle) return;
+    const { signal } = this.#abortController;
+    bundle.addEventListener(
+      'change',
+      (event) => {
+        const target = /** @type {HTMLElement} */ (event.target);
+        if (!(target instanceof HTMLInputElement) || !target.classList.contains('bundle-deals__input')) return;
+        this.#currentQuantity = parseInt(target.value, 10) || 1;
+        const select = this.#getQtySelect();
+        if (select && select.value !== target.value) select.value = target.value;
+        this.#updateButtonText();
+      },
+      { signal }
+    );
+  }
+
+  /**
+   * Rebuilds the dropdown options to mirror the bundle radios (or 1–10 if none)
+   * and sets the value to the currently selected quantity.
+   */
+  #syncQtySelect() {
+    const select = this.#getQtySelect();
+    if (!select) return;
+    const bundle = this.#getBundleDeals();
+
+    if (bundle) {
+      const inputs = /** @type {HTMLInputElement[]} */ (
+        Array.from(bundle.querySelectorAll('.bundle-deals__input'))
+      );
+      if (inputs.length) {
+        const checked = inputs.find((input) => input.checked) ?? inputs[0];
+        this.#currentQuantity = parseInt(checked.value, 10) || 1;
+        select.replaceChildren(
+          ...inputs.map((input) => {
+            const option = document.createElement('option');
+            option.value = input.value;
+            const label = input.closest('.bundle-deals__option')?.querySelector('.bundle-deals__qty');
+            option.textContent = label?.textContent?.trim() || input.value;
+            option.selected = input.checked;
+            return option;
+          })
+        );
+        select.value = checked.value;
+        return;
+      }
+    }
+
+    select.value = String(this.#currentQuantity);
+  }
+
+  /**
+   * When the sticky dropdown changes, drive the source of truth: if bundle radios
+   * exist, check the matching one (which updates the form quantity + pricing);
+   * otherwise write straight to the product form's quantity input.
+   * @param {Event} event
+   */
+  #handleQtySelectChange = (event) => {
+    const target = /** @type {HTMLElement} */ (event.target);
+    if (!(target instanceof HTMLSelectElement) || target.getAttribute('ref') !== 'quantitySelect') return;
+
+    const quantity = parseInt(target.value, 10) || 1;
+    this.#currentQuantity = quantity;
+
+    const bundle = this.#getBundleDeals();
+    const match = bundle?.querySelector(`.bundle-deals__input[value="${quantity}"]`);
+    if (match instanceof HTMLInputElement) {
+      if (!match.checked) {
+        match.checked = true;
+        match.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } else {
+      const input = this.#getQuantityInput();
+      if (input) {
+        input.value = String(quantity);
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+
+    this.#updateButtonText();
+  };
+
+  /**
    * Gets the initial quantity from the data attribute
    */
   #getInitialQuantity() {
@@ -345,8 +472,11 @@ class StickyAddToCartComponent extends Component {
     // Update the quantity number
     quantityNumber.textContent = this.#currentQuantity.toString();
 
-    // Show/hide the quantity display based on availability and quantity
-    if (available && this.#currentQuantity > 1) {
+    // Show/hide the quantity display based on availability and quantity.
+    // If the sticky bar has its own quantity dropdown, that already shows the
+    // count — so keep the parenthetical hidden to avoid duplication.
+    const hasQtySelect = this.#getQtySelect() != null;
+    if (!hasQtySelect && available && this.#currentQuantity > 1) {
       quantityDisplay.style.display = 'inline';
     } else {
       quantityDisplay.style.display = 'none';
